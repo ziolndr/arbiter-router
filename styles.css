@@ -11,6 +11,8 @@
   --accent-success:#059669;
   --accent-danger:#dc2626;
   --accent-warning:#d97706;
+  --button-bg:#111827;
+  --button-text:#ffffff;
 }
 
 html[data-theme="dark"]{
@@ -26,6 +28,8 @@ html[data-theme="dark"]{
   --accent-success:#3fb950;
   --accent-danger:#f85149;
   --accent-warning:#fb8500;
+  --button-bg:#2d333b;
+  --button-text:#f0f6fc;
 }
 
 *,*::before,*::after{
@@ -45,7 +49,6 @@ html,body{
   -moz-osx-font-smoothing:grayscale;
 }
 
-/* Typography */
 h1,h2,h3,h4,h5,h6{
   font-weight:600;
   line-height:1.2;
@@ -55,7 +58,6 @@ code,pre,kbd{
   font-family:"IBM Plex Mono",monospace;
 }
 
-/* Loading indicator */
 .loading-indicator{
   position:fixed;
   top:54px;
@@ -80,7 +82,6 @@ code,pre,kbd{
   100%{transform:scaleX(0) translateX(100%);opacity:0}
 }
 
-/* Topbar */
 .topbar{
   height:54px;
   background:var(--bg-secondary);
@@ -178,7 +179,6 @@ code,pre,kbd{
   50%{opacity:0.3}
 }
 
-/* Container layout */
 .container{
   display:grid;
   grid-template-columns:280px 1fr;
@@ -186,7 +186,6 @@ code,pre,kbd{
   overflow:hidden;
 }
 
-/* Sidebar */
 .sidebar{
   background:var(--bg-secondary);
   border-right:1px solid var(--border-primary);
@@ -339,7 +338,6 @@ code,pre,kbd{
   color:var(--accent-primary);
 }
 
-/* Main content */
 .main{
   display:flex;
   flex-direction:column;
@@ -347,7 +345,6 @@ code,pre,kbd{
   background:var(--bg-primary);
 }
 
-/* Hero section */
 .hero{
   display:grid;
   grid-template-columns:1fr 320px;
@@ -505,7 +502,6 @@ code,pre,kbd{
   border-radius:3px;
 }
 
-/* Routes grid */
 .routes-grid{
   display:grid;
   grid-template-columns:repeat(6, 1fr);
@@ -600,7 +596,6 @@ code,pre,kbd{
   color:var(--accent-success);
 }
 
-/* Lower panels */
 .lower-panels{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -680,7 +675,6 @@ code,pre,kbd{
   font-family:"IBM Plex Mono",monospace;
 }
 
-/* Candidate list */
 .candidate-row{
   display:flex;
   align-items:center;
@@ -771,7 +765,6 @@ code,pre,kbd{
   color:var(--route-color, var(--accent-primary));
 }
 
-/* cURL display */
 .curl-wrapper{
   padding:16px;
 }
@@ -788,6 +781,12 @@ code,pre,kbd{
   letter-spacing:0.03em;
 }
 
+.curl-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
 .curl-block{
   background:var(--bg-primary);
   border:1px solid var(--border-primary);
@@ -802,7 +801,6 @@ code,pre,kbd{
   margin-bottom:12px;
 }
 
-/* Result card */
 .result-card{
   border-top:1px solid var(--border-muted);
   margin-top:12px;
@@ -860,7 +858,6 @@ code,pre,kbd{
   overflow-y:auto;
 }
 
-/* Copy button */
 .btn-copy{
   background:transparent;
   border:1px solid var(--border-primary);
@@ -886,7 +883,6 @@ code,pre,kbd{
   color:var(--accent-success);
 }
 
-/* Footer */
 .footer{
   height:40px;
   background:var(--bg-secondary);
@@ -907,7 +903,6 @@ code,pre,kbd{
   font-weight:600;
 }
 
-/* Responsive design */
 @media(max-width:1200px){
   .hero{
     grid-template-columns:1fr;
