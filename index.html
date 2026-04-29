@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARBITER · Semantic Infrastructure Router</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <!-- Loading indicator -->
+  <div class="loading-indicator" id="loading-indicator"></div>
+
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <h1 class="topbar-title">ARBITER</h1>
+      <div class="topbar-divider"></div>
+      <span class="topbar-subtitle">Semantic Infrastructure Router</span>
+    </div>
+    <div class="topbar-right">
+      <span class="topbar-spec">26MB</span>
+      <span class="topbar-spec">CPU-only</span>
+      <span class="topbar-spec">&lt;1ms engine</span>
+      <button class="btn-theme" onclick="toggleTheme()" title="Toggle theme">Theme</button>
+      <div class="live-indicator"><span class="live-dot"></span>Live</div>
+    </div>
+  </header>
+
+  <!-- Main layout -->
+  <div class="container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-search-wrap">
+        <input 
+          type="text" 
+          id="sidebar-search" 
+          class="sidebar-search" 
+          placeholder="Search workloads..."
+          aria-label="Search workloads"
+        >
+      </div>
+      <nav class="sidebar-nav" id="sidebar-content"></nav>
+      <div id="history-container"></div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="main">
+      <!-- Hero section -->
+      <section class="hero">
+        <div class="hero-content">
+          <div class="hero-eyebrow">Intent → Substrate Dispatch</div>
+          <h2 class="hero-title">Semantic Workload Routing</h2>
+          <p class="hero-desc">
+            Route natural-language workload intent across heterogeneous compute destinations. 
+            Deterministic. 26MB. No retraining.
+          </p>
+
+          <!-- Intent input -->
+          <div class="intent-box">
+            <textarea
+              id="custom-input"
+              class="intent-input"
+              placeholder="Describe a workload, job, task, or destination intent..."
+              aria-label="Workload intent input"
+            ></textarea>
+            <button id="route-btn" class="btn-primary" onclick="routeIntent()" title="Ctrl+Enter">Route Intent</button>
+            <div id="route-result" class="route-result" aria-live="polite"></div>
+          </div>
+        </div>
+
+        <!-- Metrics panel -->
+        <div class="hero-metrics">
+          <div class="metric-item">
+            <div class="metric-label">Engine Latency</div>
+            <div class="metric-value">&lt;1ms</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">Latest Route</div>
+            <div class="metric-value" id="latest-latency">—</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">Confidence</div>
+            <div class="confidence-bar">
+              <div class="confidence-fill" id="confidence-fill"></div>
+            </div>
+            <div class="metric-value" id="confidence-pct" style="font-size:12px;margin-top:4px;">—</div>
+          </div>
+          <div class="metric-item">
+            <div class="metric-label">Zero-shot</div>
+            <div class="metric-value">✓</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Route cards grid -->
+      <section class="routes-grid" id="routes-container" aria-label="Substrate scoring"></section>
+
+      <!-- Lower panels -->
+      <section class="lower-panels">
+        <!-- Candidate ranking -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3 class="panel-title">Candidate Ranking</h3>
+            <span class="panel-meta" id="candidate-meta">Select a workload</span>
+          </div>
+          <div class="panel-body" id="candidate-list">
+            <div class="empty-state">Select a workload to view candidate ranking</div>
+          </div>
+        </div>
+
+        <!-- Live endpoint -->
+        <div class="panel">
+          <div class="panel-header">
+            <h3 class="panel-title">Live Endpoint</h3>
+            <span class="panel-meta" id="api-meta">api.arbiter.traut.ai</span>
+          </div>
+          <div class="panel-body">
+            <div class="curl-wrapper">
+              <div class="curl-header">
+                <span>Request</span>
+                <button class="btn-copy" onclick="copyCurl()" title="Copy to clipboard">Copy</button>
+              </div>
+              <pre class="curl-block" id="curl-block"></pre>
+            </div>
+
+            <!-- Result card -->
+            <div id="result-card" class="result-card">
+              <div class="result-header">
+                <span>Response</span>
+                <span class="result-badge" id="result-badge">—</span>
+              </div>
+              <div class="result-toolbar">
+                <button class="btn-copy" onclick="copyJSON()" title="Copy to clipboard">Copy Result</button>
+              </div>
+              <pre class="result-body" id="result-body"></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <div class="footer-col">
+          <strong>Architecture:</strong> 26MB · CPU-only · zero-shot semantic routing
+        </div>
+        <div class="footer-col">
+          <strong>Mode:</strong> Live API · Deterministic · <1ms latency
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
