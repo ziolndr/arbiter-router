@@ -416,7 +416,7 @@ code,pre,kbd{
 .btn-primary{
   grid-column:2 / 3;
   border:0;
-  background:var(--accent-primary);
+  background:var(--text-primary);
   color:#ffffff;
   padding:12px;
   font-size:11px;
