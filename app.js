@@ -83,6 +83,10 @@ const WORKLOAD_GROUPS = [
 let WORKLOADS = [];
 let currentQueryCache = new Map();
 let queryHistory = [];
+let latestQuery = '';
+let latestConfidence = '—';
+let latestLatency = '—';
+
 const MAX_HISTORY = 10;
 
 // ============ INITIALIZATION ============
@@ -90,9 +94,18 @@ function initialize() {
   buildSidebar();
   renderRouteCards();
   loadHistory();
-  selectWorkload(0);
   setupKeyboardShortcuts();
   setupSidebarSearch();
+
+  const params = new URLSearchParams(window.location.search);
+  const sharedQuery = params.get('q');
+
+  if (sharedQuery) {
+    document.getElementById('custom-input').value = sharedQuery;
+    executeRoute(sharedQuery);
+  } else {
+    selectWorkload(0);
+  }
 }
 
 // ============ SIDEBAR MANAGEMENT ============
@@ -177,6 +190,9 @@ function routeIntent() {
 async function executeRoute(query) {
   const btn = document.getElementById('route-btn');
   const loader = document.getElementById('loading-indicator');
+
+  latestQuery = query;
+
   btn.disabled = true;
   loader.classList.add('active');
 
@@ -184,7 +200,6 @@ async function executeRoute(query) {
   updateCurlDisplay(query);
   resetRouteCards();
 
-  // Check cache
   if (currentQueryCache.has(query)) {
     const cached = currentQueryCache.get(query);
     renderRouteResult(cached.data, cached.latency, query);
@@ -205,7 +220,6 @@ async function executeRoute(query) {
     const data = await response.json();
     const latency = Date.now() - t0;
 
-    // Cache result
     currentQueryCache.set(query, { data, latency });
     if (currentQueryCache.size > 50) {
       const firstKey = currentQueryCache.keys().next().value;
@@ -228,12 +242,12 @@ function renderRouteResult(data, latency, query) {
   const all = data.all || data.top || [];
 
   const scores = all.map((c, idx) => {
-    const substratIdx = CANDIDATES.findIndex(cand =>
+    const substrateIdx = CANDIDATES.findIndex(cand =>
       c.text && cand && c.text.trim().slice(0, 40) === cand.trim().slice(0, 40)
     );
 
     return {
-      substrate: substratIdx >= 0 ? substratIdx : idx % SUBSTRATES.length,
+      substrate: substrateIdx >= 0 ? substrateIdx : idx % SUBSTRATES.length,
       score: c.score,
       text: c.text
     };
@@ -246,7 +260,12 @@ function renderRouteResult(data, latency, query) {
   const confidence = calculateConfidence(gap);
   const confidencePct = Math.round((gap / maxScore) * 100);
 
-  // Update route cards
+  latestConfidence = confidence;
+  latestLatency = latency + 'ms';
+
+  document.getElementById('footer-api-ms').textContent = latestLatency;
+  document.getElementById('footer-confidence').textContent = latestConfidence;
+
   scores.forEach(s => {
     const substrate = SUBSTRATES[s.substrate];
     if (!substrate) return;
@@ -264,20 +283,16 @@ function renderRouteResult(data, latency, query) {
     badge.textContent = isWinner ? `Route · ${confidence}` : 'Standby';
   });
 
-  // Update result display
   const winnerSubstrate = SUBSTRATES[winner];
   document.getElementById('route-result').textContent = `${winnerSubstrate.name} / ${maxScore.toFixed(4)}`;
   document.getElementById('route-result').classList.add('active');
 
-  // Update confidence metrics
   document.getElementById('confidence-pct').textContent = confidence;
   document.getElementById('confidence-fill').style.width = Math.min(confidencePct * 2.5, 100) + '%';
   document.getElementById('latest-latency').textContent = latency + 'ms';
 
-  // Update candidate list
   renderCandidates(sorted, maxScore, winnerSubstrate);
 
-  // Update result card
   document.getElementById('result-card').classList.add('active');
   document.getElementById('result-badge').textContent = winnerSubstrate.name;
   document.getElementById('result-badge').style.color = getSubstrateColor(winner);
@@ -393,8 +408,8 @@ function renderHistory() {
     return;
   }
 
-  const html = queryHistory.slice(0, 5).map((query, i) => `
-    <div class="history-item" onclick="loadHistoryQuery('${query.replace(/'/g, "\\'")}'" title="${query}">
+  const html = queryHistory.slice(0, 5).map((query) => `
+    <div class="history-item" onclick="loadHistoryQuery('${query.replace(/'/g, "\\'")}')" title="${query}">
       ${query.slice(0, 30)}${query.length > 30 ? '...' : ''}
     </div>
   `).join('');
@@ -410,13 +425,11 @@ function loadHistoryQuery(query) {
 // ============ KEYBOARD SHORTCUTS ============
 function setupKeyboardShortcuts() {
   document.addEventListener('keydown', (e) => {
-    // Ctrl+Enter to route
     if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
       e.preventDefault();
       routeIntent();
     }
 
-    // Escape to clear
     if (e.key === 'Escape') {
       document.getElementById('custom-input').value = '';
     }
@@ -434,6 +447,18 @@ function copyCurl() {
 function copyJSON() {
   const text = document.getElementById('result-body').textContent;
   navigator.clipboard.writeText(text).then(() => {
+    showCopySuccess(event.target);
+  });
+}
+
+function copyShareLink() {
+  const query = document.getElementById('custom-input').value.trim() || latestQuery;
+  if (!query) return;
+
+  const url = new URL(window.location.origin + window.location.pathname);
+  url.searchParams.set('q', query);
+
+  navigator.clipboard.writeText(url.toString()).then(() => {
     showCopySuccess(event.target);
   });
 }
