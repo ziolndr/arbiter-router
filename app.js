@@ -139,7 +139,7 @@ function setupSidebarSearch() {
   searchInput.addEventListener('input', (e) => {
     const query = e.target.value.toLowerCase();
     document.querySelectorAll('.workload-item').forEach(item => {
-      const label = item.dataset.label;
+      const label = item.dataset.label || '';
       item.classList.toggle('hidden', !label.includes(query));
     });
   });
@@ -258,7 +258,7 @@ function renderRouteResult(data, latency, query) {
   const maxScore = sorted[0].score;
   const gap = sorted.length > 1 ? (sorted[0].score - sorted[1].score) : sorted[0].score;
   const confidence = calculateConfidence(gap);
-  const confidencePct = Math.round((gap / maxScore) * 100);
+  const confidencePct = maxScore ? Math.round((gap / maxScore) * 100) : 0;
 
   latestConfidence = confidence;
   latestLatency = latency + 'ms';
@@ -291,7 +291,7 @@ function renderRouteResult(data, latency, query) {
   document.getElementById('confidence-fill').style.width = Math.min(confidencePct * 2.5, 100) + '%';
   document.getElementById('latest-latency').textContent = latency + 'ms';
 
-  renderCandidates(sorted, maxScore, winnerSubstrate);
+  renderCandidates(sorted, maxScore);
 
   document.getElementById('result-card').classList.add('active');
   document.getElementById('result-badge').textContent = winnerSubstrate.name;
@@ -312,7 +312,7 @@ function renderRouteResult(data, latency, query) {
   document.getElementById('api-meta').textContent = `${latency}ms API latency`;
 }
 
-function renderCandidates(sorted, maxScore, winnerSubstrate) {
+function renderCandidates(sorted, maxScore) {
   const html = sorted.map((s, i) => {
     const isTop = i === 0;
     const pct = maxScore > 0 ? (s.score / maxScore) * 100 : 0;
@@ -401,6 +401,16 @@ function loadHistory() {
   renderHistory();
 }
 
+function escapeHTML(str) {
+  return str.replace(/[&<>"']/g, (char) => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[char]));
+}
+
 function renderHistory() {
   const container = document.getElementById('history-container');
   if (queryHistory.length === 0) {
@@ -408,16 +418,19 @@ function renderHistory() {
     return;
   }
 
-  const html = queryHistory.slice(0, 5).map((query) => `
-    <div class="history-item" onclick="loadHistoryQuery('${query.replace(/'/g, "\\'")}')" title="${query}">
-      ${query.slice(0, 30)}${query.length > 30 ? '...' : ''}
+  const html = queryHistory.slice(0, 5).map((query, index) => `
+    <div class="history-item" onclick="loadHistoryQuery(${index})" title="${escapeHTML(query)}">
+      ${escapeHTML(query.slice(0, 30))}${query.length > 30 ? '...' : ''}
     </div>
   `).join('');
 
   container.innerHTML = '<div style="width:100%;margin-top:12px;padding:8px 12px;border-bottom:1px solid var(--border-muted);font-size:10px;color:var(--text-tertiary);font-weight:600;letter-spacing:0.05em;text-transform:uppercase;">Recent</div>' + html;
 }
 
-function loadHistoryQuery(query) {
+function loadHistoryQuery(index) {
+  const query = queryHistory[index];
+  if (!query) return;
+
   document.getElementById('custom-input').value = query;
   routeIntent();
 }
@@ -437,39 +450,77 @@ function setupKeyboardShortcuts() {
 }
 
 // ============ COPY FUNCTIONS ============
-function copyCurl() {
-  const text = document.getElementById('curl-block').textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    showCopySuccess(event.target);
-  });
+async function writeToClipboard(text) {
+  if (!text) return false;
+
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(text);
+      return true;
+    }
+
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    textarea.style.top = '0';
+    textarea.style.opacity = '0';
+
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+
+    const copied = document.execCommand('copy');
+    document.body.removeChild(textarea);
+
+    return copied;
+  } catch (err) {
+    console.error('Clipboard copy failed:', err);
+    return false;
+  }
 }
 
-function copyJSON() {
-  const text = document.getElementById('result-body').textContent;
-  navigator.clipboard.writeText(text).then(() => {
-    showCopySuccess(event.target);
-  });
+async function copyCurl(btn) {
+  const text = document.getElementById('curl-block')?.textContent || '';
+  const ok = await writeToClipboard(text);
+  showCopyState(btn, ok);
 }
 
-function copyShareLink() {
-  const query = document.getElementById('custom-input').value.trim() || latestQuery;
-  if (!query) return;
+async function copyJSON(btn) {
+  const text = document.getElementById('result-body')?.textContent || '';
+  const ok = await writeToClipboard(text);
+  showCopyState(btn, ok);
+}
 
-  const url = new URL(window.location.origin + window.location.pathname);
+async function copyShareLink(btn) {
+  const query = document.getElementById('custom-input')?.value.trim() || latestQuery;
+
+  if (!query) {
+    showCopyState(btn, false);
+    return;
+  }
+
+  const url = new URL(window.location.href);
   url.searchParams.set('q', query);
 
-  navigator.clipboard.writeText(url.toString()).then(() => {
-    showCopySuccess(event.target);
-  });
+  const ok = await writeToClipboard(url.toString());
+  showCopyState(btn, ok);
 }
 
-function showCopySuccess(btn) {
-  const original = btn.textContent;
-  btn.textContent = '✓ Copied';
-  btn.classList.add('success');
+function showCopyState(btn, ok) {
+  if (!btn) return;
+
+  const original = btn.dataset.originalText || btn.textContent;
+  btn.dataset.originalText = original;
+
+  btn.textContent = ok ? 'Copied' : 'Failed';
+  btn.classList.toggle('success', ok);
+  btn.classList.toggle('error', !ok);
+
   setTimeout(() => {
     btn.textContent = original;
-    btn.classList.remove('success');
+    btn.classList.remove('success', 'error');
   }, 1500);
 }
 
