@@ -139,8 +139,8 @@
               <div class="curl-header">
                 <span>Request</span>
                 <div class="curl-actions">
-                  <button class="btn-copy" onclick="copyCurl()" title="Copy to clipboard">Copy</button>
-                  <button class="btn-copy" onclick="copyShareLink()" title="Copy share link">Share Link</button>
+                  <button class="btn-copy" onclick="copyCurl(this)" title="Copy to clipboard">Copy</button>
+                  <button class="btn-copy" onclick="copyShareLink(this)" title="Copy share link">Share Link</button>
                 </div>
               </div>
               <pre class="curl-block" id="curl-block"></pre>
@@ -152,7 +152,7 @@
                 <span class="result-badge" id="result-badge">—</span>
               </div>
               <div class="result-toolbar">
-                <button class="btn-copy" onclick="copyJSON()" title="Copy to clipboard">Copy Result</button>
+                <button class="btn-copy" onclick="copyJSON(this)" title="Copy to clipboard">Copy Result</button>
               </div>
               <pre class="result-body" id="result-body"></pre>
             </div>
