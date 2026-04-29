@@ -883,6 +883,11 @@ code,pre,kbd{
   color:var(--accent-success);
 }
 
+.btn-copy.error{
+  border-color:var(--accent-danger);
+  color:var(--accent-danger);
+}
+
 .footer{
   height:40px;
   background:var(--bg-secondary);
