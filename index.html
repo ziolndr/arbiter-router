@@ -3,16 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>ARBITER · Semantic Infrastructure Router</title>
+  <meta name="description" content="ARBITER is a 26MB CPU-only semantic infrastructure router for deterministic, zero-shot workload routing.">
+
+  <meta property="og:title" content="ARBITER · Semantic Infrastructure Router">
+  <meta property="og:description" content="Route natural-language workload intent across heterogeneous compute destinations. Deterministic. 26MB. No retraining.">
+  <meta property="og:url" content="https://getarbiter.dev">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://getarbiter.dev/og-preview.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ARBITER · Semantic Infrastructure Router">
+  <meta name="twitter:description" content="Intent-based semantic infrastructure routing. 26MB. CPU-only. Zero-shot.">
+  <meta name="twitter:image" content="https://getarbiter.dev/og-preview.png">
+
+  <link rel="icon" href="/favicon.ico">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "ARBITER",
+    "description": "Intent-based semantic infrastructure router",
+    "url": "https://getarbiter.dev",
+    "applicationCategory": "BusinessApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0"
+    }
+  }
+  </script>
 </head>
 
 <body>
-  <!-- Loading indicator -->
   <div class="loading-indicator" id="loading-indicator"></div>
 
-  <!-- Top bar -->
   <header class="topbar">
     <div class="topbar-left">
       <h1 class="topbar-title">ARBITER</h1>
@@ -28,9 +56,7 @@
     </div>
   </header>
 
-  <!-- Main layout -->
   <div class="container">
-    <!-- Sidebar -->
     <aside class="sidebar">
       <div class="sidebar-search-wrap">
         <input 
@@ -45,9 +71,7 @@
       <div id="history-container"></div>
     </aside>
 
-    <!-- Main content -->
     <main class="main">
-      <!-- Hero section -->
       <section class="hero">
         <div class="hero-content">
           <div class="hero-eyebrow">Intent → Substrate Dispatch</div>
@@ -57,7 +81,6 @@
             Deterministic. 26MB. No retraining.
           </p>
 
-          <!-- Intent input -->
           <div class="intent-box">
             <textarea
               id="custom-input"
@@ -70,7 +93,6 @@
           </div>
         </div>
 
-        <!-- Metrics panel -->
         <div class="hero-metrics">
           <div class="metric-item">
             <div class="metric-label">Engine Latency</div>
@@ -94,12 +116,9 @@
         </div>
       </section>
 
-      <!-- Route cards grid -->
       <section class="routes-grid" id="routes-container" aria-label="Substrate scoring"></section>
 
-      <!-- Lower panels -->
       <section class="lower-panels">
-        <!-- Candidate ranking -->
         <div class="panel">
           <div class="panel-header">
             <h3 class="panel-title">Candidate Ranking</h3>
@@ -110,7 +129,6 @@
           </div>
         </div>
 
-        <!-- Live endpoint -->
         <div class="panel">
           <div class="panel-header">
             <h3 class="panel-title">Live Endpoint</h3>
@@ -120,12 +138,14 @@
             <div class="curl-wrapper">
               <div class="curl-header">
                 <span>Request</span>
-                <button class="btn-copy" onclick="copyCurl()" title="Copy to clipboard">Copy</button>
+                <div class="curl-actions">
+                  <button class="btn-copy" onclick="copyCurl()" title="Copy to clipboard">Copy</button>
+                  <button class="btn-copy" onclick="copyShareLink()" title="Copy share link">Share Link</button>
+                </div>
               </div>
               <pre class="curl-block" id="curl-block"></pre>
             </div>
 
-            <!-- Result card -->
             <div id="result-card" class="result-card">
               <div class="result-header">
                 <span>Response</span>
@@ -140,13 +160,12 @@
         </div>
       </section>
 
-      <!-- Footer -->
       <footer class="footer">
         <div class="footer-col">
-          <strong>Architecture:</strong> 26MB · CPU-only · zero-shot semantic routing
+          <strong>Engine:</strong> &lt;1ms · <strong>API:</strong> <span id="footer-api-ms">—</span> · <strong>Confidence:</strong> <span id="footer-confidence">—</span>
         </div>
         <div class="footer-col">
-          <strong>Mode:</strong> Live API · Deterministic · <1ms latency
+          <strong>Architecture:</strong> 26MB · CPU-only · zero-shot semantic routing
         </div>
       </footer>
     </main>
