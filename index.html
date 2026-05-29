@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ARBITER · Semantic Infrastructure Router (Expanded)</title>
-  <meta name="description" content="Route natural-language intent across 90+ compute, model, supply chain, and finance destinations. Deterministic. 26MB. No retraining.">
+  <title>ARBITER · Compute Substrate Router</title>
+  <meta name="description" content="Route natural-language workload intent across compute, runtime, model, data, cloud, and orchestration substrates. Deterministic. 26MB. No retraining.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     /* ========== FULL ORIGINAL CSS (polished, responsive) ========== */
@@ -237,7 +237,7 @@
 <body>
 <div class="loading-indicator" id="loading-indicator"></div>
 <header class="topbar">
-  <div class="topbar-left"><h1 class="topbar-title">ARBITER</h1><div class="topbar-divider"></div><span class="topbar-subtitle">Expanded · 90+ Destinations</span></div>
+  <div class="topbar-left"><h1 class="topbar-title">ARBITER</h1><div class="topbar-divider"></div><span class="topbar-subtitle">Compute · 38 Substrates</span></div>
   <div class="topbar-right"><span class="topbar-spec">26MB</span><span class="topbar-spec">CPU-only</span><span class="topbar-spec">&lt;1ms engine</span><button class="btn-theme" onclick="toggleTheme()">Theme</button><div class="live-indicator"><span class="live-dot"></span>Live</div></div>
 </header>
 <div class="container">
@@ -249,9 +249,9 @@
   <main class="main">
     <section class="hero">
       <div class="hero-content">
-        <div class="hero-eyebrow">Intent → Substrate Dispatch</div>
-        <h2 class="hero-title">Semantic Workload Routing · Expanded</h2>
-        <p class="hero-desc">Route natural‑language intent across 90+ compute, model, supply chain, healthcare, legal, and finance destinations. Deterministic. 26MB. No retraining.</p>
+        <div class="hero-eyebrow">Intent → Compute Substrate Dispatch</div>
+        <h2 class="hero-title">Semantic Compute Substrate Routing</h2>
+        <p class="hero-desc">Route natural-language workload intent across 38 compute, runtime, accelerator, model-serving, data/index, placement, and orchestration substrates. Deterministic. 26MB. No retraining.</p>
         <div class="intent-box">
           <textarea id="custom-input" class="intent-input" placeholder="Describe a workload, shipment, job, or intent..."></textarea>
           <button id="route-btn" class="btn-primary" onclick="routeIntent()">Route ⌘↵</button>
@@ -270,7 +270,7 @@
       <div class="panel"><div class="panel-header"><h3 class="panel-title">Candidate Ranking</h3><span class="panel-meta" id="candidate-meta">Select a workload</span></div><div class="panel-body" id="candidate-list"><div class="empty-state">Select a workload</div></div></div>
       <div class="panel"><div class="panel-header"><h3 class="panel-title">Live Endpoint</h3><span class="panel-meta" id="api-meta">api.arbiter.traut.ai</span></div><div class="panel-body"><div class="curl-wrapper"><div class="curl-header"><span>Request</span><div class="curl-actions"><button class="btn-copy" onclick="copyCurl(this)">Copy</button><button class="btn-copy" onclick="copyShareLink(this)">Share Link</button></div></div><pre class="curl-block" id="curl-block"></pre></div><div id="result-card" class="result-card"><div class="result-header"><span>Response</span><span class="result-badge" id="result-badge">—</span></div><div class="result-toolbar"><button class="btn-copy" onclick="copyJSON(this)">Copy Result</button></div><pre class="result-body" id="result-body"></pre></div></div></div>
     </section>
-    <footer class="footer"><div class="footer-col"><strong>Engine:</strong> &lt;1ms · <strong>API:</strong> <span id="footer-api-ms">—</span> · <strong>Confidence:</strong> <span id="footer-confidence">—</span></div><div class="footer-col"><strong>Architecture:</strong> 26MB · CPU-only · zero-shot semantic routing</div></footer>
+    <footer class="footer"><div class="footer-col"><strong>Engine:</strong> &lt;1ms · <strong>API:</strong> <span id="footer-api-ms">—</span> · <strong>Confidence:</strong> <span id="footer-confidence">—</span></div><div class="footer-col"><strong>Architecture:</strong> 26MB · CPU-only · zero-shot substrate routing</div></footer>
   </main>
 </div>
 <script>
@@ -310,98 +310,274 @@ function toggleTheme() {
 const savedTheme = safeStorageGet('arbiter-theme', 'dark') || 'dark';
 document.documentElement.dataset.theme = savedTheme;
 
-// ============ 90+ DESTINATIONS (Compute, Models, Supply Chain, Healthcare, Legal, Finance, ...) ============
+// ============ COMPUTE SUBSTRATE DESTINATIONS ============
 const DESTINATIONS = [
-  {id:0,code:'QU',name:'Quantum',category:'Compute',candidate:'QPU qubit entanglement superposition Hilbert space wavefunction eigenstate unitary operator Hamiltonian decoherence Bell state variational ansatz quantum annealing Pauli matrix'},
-  {id:1,code:'AI',name:'AI/LLM',category:'Compute',candidate:'transformer large language model token embedding attention inference generation prompt reasoning schema extraction natural language structured output document'},
-  {id:2,code:'NE',name:'Neuromorphic',category:'Compute',candidate:'neuromorphic spike timing synaptic event-driven edge inference sub-millisecond asynchronous low-power streaming continuous sensor anomaly'},
-  {id:3,code:'HP',name:'HPC Service',category:'Compute',candidate:'NVIDIA CUDA driver cuBLAS cuDNN PTX SASS GPU accelerator VRAM PCIe interconnect multiprocessor occupancy register file shared memory throughput profiling nsight compute'},
-  {id:4,code:'DS',name:'Dask/Spark',category:'Compute',candidate:'Dask Spark dataframe DAG task graph shuffle partition executor worker distributed aggregation cloud-native lazy evaluation parallel scaling'},
-  {id:5,code:'HB',name:'HPC Batch',category:'Compute',candidate:'LSF PBS Slurm cron job queue sequential deterministic idempotent checkpoint restart end-of-day serial single-threaded overnight batch non-parallel'},
-  {id:6,code:'GPT',name:'OpenAI GPT',category:'Model',candidate:'OpenAI GPT large language model high-accuracy reasoning complex instruction following conversational agent API structured tool calling'},
-  {id:7,code:'CLD',name:'Claude',category:'Model',candidate:'Anthropic Claude constitutional AI careful long-context reasoning writing analysis nuanced instruction following safety sensitive conversation'},
-  {id:8,code:'LLM',name:'Llama',category:'Model',candidate:'Meta Llama open-source foundation model efficient inference customizable deployment local weights research commercial use self hosted language model'},
-  {id:9,code:'CS',name:'Customer Service API',category:'API',candidate:'Zendesk Salesforce ServiceNow ticket routing customer support case management complaint resolution SLA tracking helpdesk workflow escalation'},
-  {id:10,code:'DOC',name:'Documentation API',category:'API',candidate:'ReadMe Mintlify Swagger OpenAPI technical documentation semantic search developer portal API reference code examples endpoint guide'},
-  {id:11,code:'DW',name:'Analytics Warehouse',category:'Data',candidate:'Snowflake BigQuery Redshift columnar storage OLAP analytical queries data warehousing dashboard business intelligence historical reporting'},
-  {id:12,code:'TXN',name:'Transaction DB',category:'Data',candidate:'PostgreSQL MySQL Oracle OLTP row-oriented ACID compliance point queries low-latency transaction processing relational database'},
-  {id:13,code:'GREEN',name:'Green Energy Region',category:'Cloud',candidate:'Google Cloud europe-west4 Netherlands wind-powered solar renewable energy low-carbon compute sustainable region carbon-aware workload'},
-  {id:14,code:'LOW',name:'Low-Cost Region',category:'Cloud',candidate:'AWS us-east-1 Northern Virginia spot instances transient compute cost-optimized interruptible workloads cheap batch processing elastic capacity'},
-  {id:15,code:'EU',name:'EU Sovereign Cloud',category:'Cloud',candidate:'AWS Europe Frankfurt T-Systems data residency GDPR compliance sovereign control German jurisdiction regulated European workload'},
-  {id:16,code:'GOV',name:'US GovCloud',category:'Cloud',candidate:'AWS GovCloud US-East FedRAMP high-impact IL4 IL5 DoD compliance classified workload authorized government cloud enclave'},
-  {id:17,code:'NAV',name:'Robot Navigation',category:'Robotics',candidate:'ROS navigation stack path planning obstacle avoidance SLAM localization autonomous mobile robot route planning safe movement'},
-  {id:18,code:'MAN',name:'Robot Manipulation',category:'Robotics',candidate:'MoveIt grasping inverse kinematics motion planning collision avoidance pick-and-place visual servoing robotic arm manipulation'},
-  {id:19,code:'AIR',name:'Air Cargo',category:'Supply Chain',candidate:'air freight cargo urgent expedited shipment airport uplift time-definite premium service high priority high margin lightweight electronics perishables long distance fast delivery'},
-  {id:20,code:'REEF',name:'Cold Chain Reefer',category:'Supply Chain',candidate:'refrigerated reefer truck cold chain temperature controlled biologics frozen chilled pharma food spoilage risk validated custody temperature excursion monitoring'},
-  {id:21,code:'RAIL',name:'Intermodal Rail',category:'Supply Chain',candidate:'intermodal rail container long haul cost efficient lower carbon predictable bulk freight port inland ramp drayage non-urgent heavy shipment'},
-  {id:22,code:'LTL',name:'LTL Freight',category:'Supply Chain',candidate:'less-than-truckload LTL palletized freight regional shipment commercial dock forklift delivery proof of delivery terminal network consolidation moderate urgency cost-sensitive partial truckload dock-to-dock BOL carrier pickup'},
-  {id:23,code:'LAST',name:'Last-Mile Courier',category:'Supply Chain',candidate:'last mile courier same-day local delivery parcel urban route final mile customer doorstep proof of delivery tight delivery window small package'},
-  {id:24,code:'PORT',name:'Port Drayage',category:'Supply Chain',candidate:'port drayage container pickup transload chassis demurrage detention terminal gate appointment inland warehouse port congestion customs container availability'},
-  {id:25,code:'DC',name:'Inventory Reallocation',category:'Supply Chain',candidate:'distribution center inventory reallocation rebalance stock transfer allocate from alternate DC safety stock service level backorder mitigation demand surge'},
-  {id:26,code:'HOLD',name:'Validated Hold',category:'Supply Chain',candidate:'hold shipment validated storage cold room quarantine quality assurance custody preserve product integrity delay release compliance inspection controlled warehouse'},
-  {id:27,code:'FLEET',name:'Private Fleet',category:'Supply Chain',candidate:'private fleet dedicated truck company driver direct control high service reliability chain of custody specialized equipment fleet dispatch operational control'},
-  {id:28,code:'FTL',name:'Full Truckload',category:'Supply Chain',candidate:'full truckload FTL dedicated trailer high-volume shipment dock-to-dock truckload freight direct route lower handling bulk palletized freight large shipment carrier tender'},
-  {id:29,code:'EXP',name:'Expedited Truck',category:'Supply Chain',candidate:'expedited truck team drivers hotshot urgent freight time-critical shipment premium ground service direct delivery tight deadline emergency recovery'},
-  {id:30,code:'OCEAN',name:'Ocean Freight',category:'Supply Chain',candidate:'ocean freight container vessel booking international import export port-to-port long lead time low cost high volume customs documentation maritime shipping'},
-  {id:31,code:'PARCEL',name:'Parcel Network',category:'Supply Chain',candidate:'parcel carrier UPS FedEx DHL small package label sortation residential commercial delivery tracking proof of delivery zone-based rating'},
-  {id:32,code:'XDOCK',name:'Cross-Dock',category:'Supply Chain',candidate:'cross dock transfer consolidation deconsolidation warehouse bypass fast transload no storage flow-through distribution hub pallet sorting'},
-  {id:33,code:'RET',name:'Reverse Logistics',category:'Supply Chain',candidate:'reverse logistics returns processing RMA refurbishment recycling customer return inspection restock disposition warranty repair reverse supply chain'},
-  {id:34,code:'CUST',name:'Customs Broker',category:'Supply Chain',candidate:'customs brokerage import clearance tariff HTS code duties documentation commercial invoice customs bond regulatory border compliance'},
-  {id:35,code:'HAZ',name:'Hazmat Freight',category:'Supply Chain',candidate:'hazardous materials hazmat freight dangerous goods placards MSDS compliance DOT IATA IMDG regulated chemicals safety handling'},
-  {id:36,code:'PA',name:'Prior Authorization',category:'Healthcare',candidate:'prior authorization medical necessity coverage criteria step therapy payer policy clinical documentation utilization management approval denial appeal workflow'},
-  {id:37,code:'TRIAGE',name:'Clinical Triage',category:'Healthcare',candidate:'clinical triage symptom severity risk stratification nurse routing urgent care emergency escalation patient intake acuity assessment'},
-  {id:38,code:'REF',name:'Specialist Referral',category:'Healthcare',candidate:'specialist referral care coordination provider network referral authorization appointment routing patient navigation clinical handoff'},
-  {id:39,code:'PHARM',name:'Pharmacy Fulfillment',category:'Healthcare',candidate:'pharmacy fulfillment prescription dispensing medication inventory cold chain controlled substance refill adherence PBM claim adjudication'},
-  {id:40,code:'LAB',name:'Lab Order Routing',category:'Healthcare',candidate:'laboratory order routing specimen collection blood test pathology reference lab turnaround time chain of custody test requisition'},
-  {id:41,code:'RPM',name:'Remote Patient Alert',category:'Healthcare',candidate:'remote patient monitoring wearable vitals alert threshold telemetry escalation chronic care home monitoring device signal'},
-  {id:42,code:'EDISC',name:'eDiscovery Review',category:'Legal',candidate:'eDiscovery document review privilege relevance responsiveness litigation hold custodians discovery production redaction legal matter document corpus'},
-  {id:43,code:'PRIV',name:'Privilege Review',category:'Legal',candidate:'attorney client privilege work product legal advice confidential communication privilege log clawback protected document review'},
-  {id:44,code:'CONTRACT',name:'Contract Triage',category:'Legal',candidate:'contract review clause extraction obligation liability indemnity termination renewal governing law counterparty risk legal operations'},
-  {id:45,code:'KYC',name:'KYC AML Review',category:'Compliance',candidate:'know your customer AML sanctions screening beneficial ownership suspicious activity risk scoring financial crime compliance onboarding'},
-  {id:46,code:'POLICY',name:'Policy Exception',category:'Compliance',candidate:'policy exception control waiver risk acceptance compliance review governance approval audit trail enterprise risk management'},
-  {id:47,code:'FRAUD',name:'Fraud Investigation',category:'Finance',candidate:'fraud detection anomaly transaction suspicious pattern account takeover chargeback investigation risk rules payment monitoring'},
-  {id:48,code:'CREDIT',name:'Credit Underwriting',category:'Finance',candidate:'credit underwriting borrower risk income verification debt service collateral FICO cash flow approval loan decision'},
-  {id:49,code:'TREAS',name:'Treasury Liquidity',category:'Finance',candidate:'treasury liquidity cash management working capital sweep funding short term investment payment timing cash forecast'},
-  {id:50,code:'CLAIMS',name:'Insurance Claims',category:'Insurance',candidate:'insurance claim FNOL adjuster triage coverage liability damage estimate subrogation settlement fraud review policyholder'},
-  {id:51,code:'UW',name:'Insurance Underwriting',category:'Insurance',candidate:'insurance underwriting risk selection premium pricing exposure class actuarial loss history hazard inspection policy issuance'},
-  {id:52,code:'PERMIT',name:'Permit Routing',category:'Public Sector',candidate:'building permit zoning plan review inspection code compliance entitlement application municipal workflow applicant routing'},
-  {id:53,code:'311',name:'Citizen Service',category:'Public Sector',candidate:'311 citizen service request pothole graffiti sanitation streetlight case routing municipal work order constituent response'},
-  {id:54,code:'EMERG',name:'Emergency Dispatch',category:'Public Sector',candidate:'emergency dispatch incident command resource allocation fire EMS police disaster response priority routing mutual aid'},
-  {id:55,code:'BENEFIT',name:'Benefits Eligibility',category:'Public Sector',candidate:'benefits eligibility caseworker social services SNAP Medicaid housing assistance document verification applicant intake'},
-  {id:56,code:'FIELD',name:'Field Technician',category:'Field Service',candidate:'field service technician dispatch repair work order skill match parts availability customer appointment SLA route optimization'},
-  {id:57,code:'ASSET',name:'Asset Maintenance',category:'Industrial',candidate:'asset maintenance predictive maintenance failure mode vibration temperature inspection reliability spare parts downtime prevention'},
-  {id:58,code:'SCADA',name:'SCADA Alarm',category:'Industrial',candidate:'SCADA alarm industrial control telemetry sensor anomaly control room escalation operational technology plant monitoring'},
-  {id:59,code:'GRIDOPS',name:'Grid Dispatch',category:'Energy',candidate:'electric grid dispatch demand response load balancing outage restoration DER battery storage transmission constraint utility operations'},
-  {id:60,code:'DRILL',name:'Wellsite Decision',category:'Energy',candidate:'wellsite drilling operation mud pressure safety equipment failure geology directional drilling field decision'},
-  {id:61,code:'SOC',name:'SOC Triage',category:'Security',candidate:'security operations center alert triage SIEM EDR suspicious login malware phishing incident response severity enrichment'},
-  {id:62,code:'IAM',name:'Access Request',category:'Security',candidate:'identity access management IAM access request role based access privilege approval entitlement least privilege audit'},
-  {id:63,code:'DLP',name:'Data Loss Alert',category:'Security',candidate:'data loss prevention DLP sensitive data exfiltration policy violation file transfer insider risk classification'},
-  {id:64,code:'VULN',name:'Vulnerability Triage',category:'Security',candidate:'vulnerability management CVE severity exploitability asset criticality patch priority remediation risk scoring'},
-  {id:65,code:'AD',name:'Ad Delivery',category:'Growth',candidate:'ad delivery campaign optimization bid strategy audience targeting conversion CPA ROAS creative rotation budget pacing'},
-  {id:66,code:'MOD',name:'Content Moderation',category:'Trust',candidate:'content moderation policy violation safety review abuse spam harassment escalation human review platform trust'},
-  {id:67,code:'REC',name:'Recommendation',category:'Consumer',candidate:'recommendation ranking personalization user intent catalog matching content discovery relevance engagement preference'},
-  {id:68,code:'LIST',name:'Listing Match',category:'Real Estate',candidate:'real estate listing match buyer preferences neighborhood school commute budget bedrooms amenities search relevance home discovery'},
-  {id:69,code:'MKT',name:'Market Signal',category:'Real Estate',candidate:'housing market signal mortgage rates inventory price cuts absorption affordability builder incentives demand interpretation'},
-  {id:70,code:'DEV',name:'Development Feasibility',category:'Real Estate',candidate:'real estate development feasibility land acquisition zoning entitlement absorption rent growth cap rate construction cost market demand'},
-  {id:71,code:'FIT',name:'Mechanistic Fit',category:'Life Science',candidate:'therapeutic candidate mechanistic fit patient disease profile pathway target validation organoid wet lab disease modifying screening'},
-  {id:72,code:'TRIAL',name:'Trial Match',category:'Life Science',candidate:'clinical trial matching eligibility criteria genomic profile biomarker inclusion exclusion protocol patient recruitment oncology'},
-  {id:73,code:'ASSAY',name:'Assay Selection',category:'Life Science',candidate:'assay selection validation endpoint biomarker readout cell model organoid in vitro experimental design translational biology'},
-  {id:74,code:'CPU',name:'CPU SIMD',category:'Compute',candidate:'CPU SIMD vectorized numeric workload AVX AVX2 AVX512 NEON cache locality branch prediction memory bandwidth low-latency scalar control flow deterministic host compute'},
-  {id:75,code:'TPU',name:'TPU/XLA',category:'Compute',candidate:'TPU tensor processing unit XLA JAX TensorFlow matrix multiplication systolic array bfloat16 training inference accelerator high throughput model compute'},
-  {id:76,code:'FPGA',name:'FPGA Fabric',category:'Compute',candidate:'FPGA programmable logic RTL Verilog VHDL gateware deterministic latency hardware pipeline fixed function acceleration low jitter packet processing signal processing'},
-  {id:77,code:'WASM',name:'WebAssembly Runtime',category:'Compute',candidate:'WebAssembly WASM portable sandbox browser edge runtime plugin isolation deterministic execution near-native performance secure embeddable module'},
-  {id:78,code:'SVR',name:'Serverless Function',category:'Compute',candidate:'serverless function AWS Lambda Cloud Run Azure Functions event trigger autoscaling stateless short lived burst traffic request response managed runtime'},
-  {id:79,code:'K8S',name:'Kubernetes Service',category:'Compute',candidate:'Kubernetes container orchestration pods deployments services autoscaling rolling update service mesh persistent workload cloud native microservice operations'},
-  {id:80,code:'EDGE',name:'Edge Worker',category:'Compute',candidate:'edge compute CDN worker Cloudflare Fastly V8 isolate global low latency request transform cache personalization geography close to user'},
-  {id:81,code:'FLINK',name:'Stream Processor',category:'Compute',candidate:'Apache Flink Kafka Streams real time streaming windowed aggregation event time stateful operator exactly once continuous pipeline low latency telemetry'},
-  {id:82,code:'RAY',name:'Ray Cluster',category:'Compute',candidate:'Ray distributed Python actors tasks object store reinforcement learning hyperparameter tuning parallel workers scalable ML pipeline dynamic task graph'},
-  {id:83,code:'MPI',name:'MPI Cluster',category:'Compute',candidate:'MPI OpenMP HPC cluster RDMA InfiniBand tightly coupled simulation message passing domain decomposition numerical solver distributed memory supercomputing'},
-  {id:84,code:'VEC',name:'Vector Index',category:'Compute',candidate:'vector database approximate nearest neighbor HNSW IVF semantic index embedding search retrieval high dimensional similarity memory resident ANN recall latency'},
-  {id:85,code:'GRAPH',name:'Graph Compute',category:'Compute',candidate:'graph compute graph database traversal shortest path PageRank community detection relationship network topology knowledge graph node edge queries'},
-  {id:86,code:'SEARCH',name:'Search Index',category:'Compute',candidate:'Elasticsearch OpenSearch Lucene inverted index full text retrieval BM25 faceting filters ranking autocomplete log search document corpus relevance'},
-  {id:87,code:'OBJ',name:'Object Storage',category:'Compute',candidate:'object storage S3 blob durable cheap large files immutable artifacts parquet lakehouse cold data batch input archival retrieval lifecycle policy'},
-  {id:88,code:'RULES',name:'Rules Engine',category:'Compute',candidate:'rules engine decision table deterministic policy evaluation business rules constraints eligibility scoring transparent audit explainable branching workflow'},
-  {id:89,code:'BPM',name:'Workflow Orchestrator',category:'Compute',candidate:'workflow orchestrator Airflow Temporal Dagster Prefect DAG retries scheduling dependencies long running process durable execution task coordination'},
+  {
+    "id": 0,
+    "code": "CPU",
+    "name": "CPU/SIMD",
+    "category": "Compute",
+    "candidate": "CPU SIMD scalar vectorized branchy control flow cache locality low-latency host execution AVX NEON integer floating point serial sections memory bandwidth general purpose compute"
+  },
+  {
+    "id": 1,
+    "code": "GPU",
+    "name": "GPU/CUDA",
+    "category": "Accelerator",
+    "candidate": "GPU CUDA NVIDIA kernel tensor throughput massively parallel vector operations VRAM memory coalescing cuBLAS cuDNN PTX occupancy accelerator simulation training rendering"
+  },
+  {
+    "id": 2,
+    "code": "TPU",
+    "name": "TPU/XLA",
+    "category": "Accelerator",
+    "candidate": "TPU XLA JAX TensorFlow bfloat16 systolic array matrix multiplication compiled graph tensor training inference accelerator high throughput batched neural network"
+  },
+  {
+    "id": 3,
+    "code": "FPGA",
+    "name": "FPGA Fabric",
+    "category": "Accelerator",
+    "candidate": "FPGA RTL Verilog VHDL deterministic hardware pipeline fixed function logic low jitter packet processing signal transform custom accelerator bitstream gate array"
+  },
+  {
+    "id": 4,
+    "code": "QPU",
+    "name": "Quantum Processor",
+    "category": "Accelerator",
+    "candidate": "quantum processor qubit superposition entanglement Hamiltonian variational ansatz quantum annealing optimization eigenstate unitary circuit decoherence Pauli measurement"
+  },
+  {
+    "id": 5,
+    "code": "NEURO",
+    "name": "Neuromorphic",
+    "category": "Accelerator",
+    "candidate": "neuromorphic spike timing spiking neural network event driven sensor asynchronous inference low power edge anomaly synaptic plasticity temporal sparse signal"
+  },
+  {
+    "id": 6,
+    "code": "WASM",
+    "name": "WebAssembly Runtime",
+    "category": "Runtime",
+    "candidate": "WebAssembly WASM sandbox portable module browser plugin near native deterministic execution secure runtime extension isolation memory safe edge compatible"
+  },
+  {
+    "id": 7,
+    "code": "SVR",
+    "name": "Serverless Function",
+    "category": "Runtime",
+    "candidate": "serverless function FaaS short lived stateless event trigger autoscale cold start managed runtime request response burst traffic low operations"
+  },
+  {
+    "id": 8,
+    "code": "K8S",
+    "name": "Kubernetes Service",
+    "category": "Runtime",
+    "candidate": "Kubernetes container orchestration deployment pod service autoscaling rolling update health check service discovery microservice long running workload"
+  },
+  {
+    "id": 9,
+    "code": "EDGE",
+    "name": "Edge Worker",
+    "category": "Runtime",
+    "candidate": "edge worker CDN point of presence low latency request transform browser proximity geo personalization cache header rewrite lightweight compute global distribution"
+  },
+  {
+    "id": 10,
+    "code": "VM",
+    "name": "Virtual Machine",
+    "category": "Runtime",
+    "candidate": "virtual machine full operating system VM persistent host custom daemon privileged process stable network interface system package long lived service"
+  },
+  {
+    "id": 11,
+    "code": "BARE",
+    "name": "Bare Metal",
+    "category": "Runtime",
+    "candidate": "bare metal dedicated host no hypervisor NUMA pinning direct hardware access predictable latency high performance isolated server kernel tuning"
+  },
+  {
+    "id": 12,
+    "code": "SPARK",
+    "name": "Spark/Dask",
+    "category": "Distributed",
+    "candidate": "Spark Dask dataframe distributed workers partition shuffle map reduce aggregation lazy evaluation executor scheduler cloud ETL parallel table processing"
+  },
+  {
+    "id": 13,
+    "code": "RAY",
+    "name": "Ray Cluster",
+    "category": "Distributed",
+    "candidate": "Ray distributed Python actors tasks object store elastic workers model evaluation hyperparameter tuning reinforcement learning parallel simulation dynamic workload"
+  },
+  {
+    "id": 14,
+    "code": "MPI",
+    "name": "MPI Cluster",
+    "category": "Distributed",
+    "candidate": "MPI message passing distributed memory RDMA interconnect tightly coupled solver domain decomposition synchronized timestep HPC numerical simulation collective communication"
+  },
+  {
+    "id": 15,
+    "code": "SLURM",
+    "name": "HPC Batch Queue",
+    "category": "Distributed",
+    "candidate": "Slurm PBS LSF batch queue scheduled job array checkpoint restart overnight deterministic pipeline noninteractive compute cluster allocation"
+  },
+  {
+    "id": 16,
+    "code": "FLINK",
+    "name": "Stream Processor",
+    "category": "Distributed",
+    "candidate": "Flink Kafka stream processing event time windowed aggregation stateful operator exactly once telemetry continuous pipeline low latency events"
+  },
+  {
+    "id": 17,
+    "code": "ACTOR",
+    "name": "Actor Runtime",
+    "category": "Distributed",
+    "candidate": "actor runtime Erlang Akka Orleans distributed actors message passing supervision fault tolerance stateful services concurrency resilience"
+  },
+  {
+    "id": 18,
+    "code": "VEC",
+    "name": "Vector Index",
+    "category": "Data/Index",
+    "candidate": "vector index embeddings ANN HNSW approximate nearest neighbor semantic recall dense vectors low latency similarity search memory resident retrieval"
+  },
+  {
+    "id": 19,
+    "code": "GRAPH",
+    "name": "Graph Compute",
+    "category": "Data/Index",
+    "candidate": "graph database graph compute nodes edges traversal shortest path community detection entity relationship network topology Neo4j Pregel influence propagation"
+  },
+  {
+    "id": 20,
+    "code": "SEARCH",
+    "name": "Search Index",
+    "category": "Data/Index",
+    "candidate": "search index inverted index BM25 lexical retrieval full text query ranking facet filter OpenSearch Elasticsearch keyword corpus"
+  },
+  {
+    "id": 21,
+    "code": "OLAP",
+    "name": "Analytics Warehouse",
+    "category": "Data/Index",
+    "candidate": "OLAP warehouse Snowflake BigQuery Redshift columnar storage analytical SQL dashboard aggregation scan historical reporting business intelligence"
+  },
+  {
+    "id": 22,
+    "code": "OLTP",
+    "name": "Transaction DB",
+    "category": "Data/Index",
+    "candidate": "OLTP PostgreSQL MySQL relational database ACID transaction row store point lookup write consistency foreign key low latency application state"
+  },
+  {
+    "id": 23,
+    "code": "OBJ",
+    "name": "Object Storage",
+    "category": "Data/Index",
+    "candidate": "object storage S3 GCS blob parquet lakehouse immutable artifacts cold data archive lifecycle batch input large files durable cheap storage"
+  },
+  {
+    "id": 24,
+    "code": "CACHE",
+    "name": "In-Memory Cache",
+    "category": "Data/Index",
+    "candidate": "Redis Memcached in memory cache key value low latency hot path ephemeral state session store pubsub rate limit fast lookup"
+  },
+  {
+    "id": 25,
+    "code": "LLM",
+    "name": "LLM Inference",
+    "category": "Model Serving",
+    "candidate": "large language model inference transformer token generation attention prompt structured output tool calling reasoning summarization conversational API text generation"
+  },
+  {
+    "id": 26,
+    "code": "LOCAL",
+    "name": "Local Model Runtime",
+    "category": "Model Serving",
+    "candidate": "local model runtime self hosted weights offline inference Llama Mistral quantized GGUF vLLM Ollama private deployment no external API"
+  },
+  {
+    "id": 27,
+    "code": "EMBED",
+    "name": "Embedding Service",
+    "category": "Model Serving",
+    "candidate": "embedding service vectorization text encoder semantic representation batch embed normalized vectors retrieval indexing similarity feature extraction"
+  },
+  {
+    "id": 28,
+    "code": "VLM",
+    "name": "Vision-Language Model",
+    "category": "Model Serving",
+    "candidate": "vision language model multimodal image understanding screenshot document OCR visual question answering scene description detection language grounding"
+  },
+  {
+    "id": 29,
+    "code": "ASR",
+    "name": "Speech/Audio Model",
+    "category": "Model Serving",
+    "candidate": "speech recognition audio transcription ASR speaker diarization voice signal waveform acoustic model phoneme timestamp captioning"
+  },
+  {
+    "id": 30,
+    "code": "GREEN",
+    "name": "Carbon-Aware Region",
+    "category": "Placement",
+    "candidate": "carbon aware region renewable energy low carbon compute sustainability wind solar data center workload placement emissions optimized scheduling"
+  },
+  {
+    "id": 31,
+    "code": "SPOT",
+    "name": "Spot/Preemptible Capacity",
+    "category": "Placement",
+    "candidate": "spot instance preemptible compute cheap transient workload checkpoint tolerant interruptible batch elastic low cost cloud capacity"
+  },
+  {
+    "id": 32,
+    "code": "GOV",
+    "name": "GovCloud / Regulated Region",
+    "category": "Placement",
+    "candidate": "GovCloud FedRAMP DoD IL4 IL5 regulated workload data residency compliance enclave government cloud authorization controlled jurisdiction"
+  },
+  {
+    "id": 33,
+    "code": "SOV",
+    "name": "Sovereign Cloud",
+    "category": "Placement",
+    "candidate": "sovereign cloud data residency GDPR jurisdiction local control European regulated workload compliance national boundary trusted operator"
+  },
+  {
+    "id": 34,
+    "code": "BPM",
+    "name": "Workflow Orchestrator",
+    "category": "Control Plane",
+    "candidate": "workflow orchestrator Airflow Temporal Dagster Prefect DAG retries dependencies scheduling durable execution long running process task coordination"
+  },
+  {
+    "id": 35,
+    "code": "RULES",
+    "name": "Rules Engine",
+    "category": "Control Plane",
+    "candidate": "rules engine decision table deterministic policy evaluation constraints eligibility transparent audit explainable branching business logic routing"
+  },
+  {
+    "id": 36,
+    "code": "POLICY",
+    "name": "Policy Gate",
+    "category": "Control Plane",
+    "candidate": "policy gate OPA Open Policy Agent authorization compliance guardrail constraint admission control governance enforcement runtime decision"
+  },
+  {
+    "id": 37,
+    "code": "QUEUE",
+    "name": "Message Queue",
+    "category": "Control Plane",
+    "candidate": "message queue SQS RabbitMQ NATS Kafka queue decoupled producer consumer backpressure asynchronous job buffer retry durable messaging"
+  }
 ];
 
 const SUBSTRATES = DESTINATIONS.map(({candidate,...rest})=>rest);
@@ -409,66 +585,246 @@ const CANDIDATES = DESTINATIONS.map(d=>d.candidate);
 const CANDIDATE_INDEX = new Map(CANDIDATES.map((c,i)=>[normalizeCandidate(c),i]));
 
 const WORKLOAD_GROUPS = [
-  {label:'Compute Substrates', items:[
-    {code:'QU',label:'Quantum Optimization',sub:'QPU',query:'Portfolio optimization with combinatorial constraints, many correlated variables, possible quantum annealing advantage, search across high-dimensional risk states and non-convex objective function'},
-    {code:'AI',label:'Document Reasoning',sub:'extraction',query:'Long natural language report requiring reasoning, extraction, summarization, schema generation, and plain-English answer synthesis from messy unstructured text'},
-    {code:'NE',label:'Realtime Sensor Spike',sub:'neuromorphic',query:'Continuous sensor stream with microsecond anomalies, low power edge inference, event-driven response, asynchronous spike pattern detection, no batch delay allowed'},
-    {code:'HP',label:'GPU Simulation',sub:'CUDA',query:'Massively parallel stochastic simulation with large vector operations, GPU kernels, high throughput compute, VRAM pressure, profiling, tensor acceleration'},
-    {code:'DS',label:'Distributed Table Job',sub:'Dask/Spark',query:'Large partitioned dataframe workload requiring distributed workers, parallel aggregation, shuffle, lazy evaluation, and scalable cloud ETL execution'},
-    {code:'HB',label:'Overnight Batch',sub:'Slurm',query:'Deterministic scheduled overnight run with checkpoint restart, queue submission, non-interactive batch processing, serial stages, idempotent pipeline execution'},
-    {code:'CPU',label:'Branchy Low-Latency Service',sub:'SIMD/CPU',query:'Latency-sensitive workload with branchy control flow, moderate numeric processing, cache locality concerns, deterministic host execution, and no need for GPU acceleration.'},
-    {code:'TPU',label:'Matrix Training Run',sub:'TPU/XLA',query:'Large tensor workload dominated by matrix multiplication, JAX or TensorFlow graph compilation, bfloat16 acceleration, high throughput training, and accelerator-friendly data pipeline.'},
-    {code:'FPGA',label:'Deterministic Packet Path',sub:'FPGA',query:'Ultra-low-jitter packet processing and signal transformation with deterministic latency, fixed-function hardware pipeline, custom logic, and predictable throughput.'},
-    {code:'WASM',label:'Portable Browser Sandbox',sub:'WASM',query:'Portable plugin execution inside a secure sandbox, browser-compatible runtime, deterministic module behavior, near-native performance, and low trust extension boundary.'},
-    {code:'SVR',label:'Event Burst Handler',sub:'serverless',query:'Short-lived stateless request handler triggered by events, unpredictable burst traffic, managed runtime, autoscaling, low operations burden, and simple request-response execution.'},
-    {code:'K8S',label:'Long-Running Microservice',sub:'Kubernetes',query:'Containerized service requiring rolling deploys, autoscaling, service discovery, persistent operation, health checks, and cloud-native orchestration.'},
-    {code:'EDGE',label:'Global Edge Transform',sub:'edge worker',query:'User-facing request transformation that must execute close to the browser, use CDN edge locations, personalize by geography, and minimize round-trip latency.'},
-    {code:'FLINK',label:'Stateful Event Stream',sub:'Flink/Kafka',query:'Continuous event stream requiring windowed aggregation, event-time semantics, stateful processing, exactly-once delivery, and low-latency telemetry updates.'},
-    {code:'RAY',label:'Distributed Python Jobs',sub:'Ray',query:'Python-native distributed workload with dynamic tasks, actors, shared object store, parallel model evaluation, hyperparameter tuning, and elastic workers.'},
-    {code:'MPI',label:'Tightly Coupled Solver',sub:'MPI cluster',query:'Numerical simulation with domain decomposition, distributed memory, RDMA interconnect, message passing, synchronized steps, and tightly coupled HPC execution.'},
-    {code:'VEC',label:'Semantic Vector Recall',sub:'ANN index',query:'High-dimensional embedding retrieval with approximate nearest neighbor search, HNSW index, low-latency recall, memory-resident vectors, and semantic candidate preselection.'},
-    {code:'GRAPH',label:'Relationship Traversal',sub:'graph compute',query:'Network of entities and relationships requiring multi-hop traversal, shortest path, community detection, influence propagation, and graph topology analysis.'}
-  ]},
-  {label:'Model Routing', items:[
-    {code:'GPT',label:'Tool-Calling Agent',sub:'OpenAI',query:'Interactive assistant task requiring reliable tool calling, structured JSON outputs, high instruction following, conversational API behavior, and complex user request decomposition'},
-    {code:'CLD',label:'Long Context Analysis',sub:'Claude',query:'Long sensitive document requiring careful analysis, nuanced writing, conservative reasoning, safety-aware explanation, and high-context synthesis'},
-    {code:'LLM',label:'Self-Hosted Model',sub:'Llama',query:'Local deployable open model needed for private inference, customizable weights, self-hosted environment, offline language model workflow, and efficient research iteration'}
-  ]},
-  {label:'Supply Chain & Logistics', items:[
-    {code:'AIR',label:'High-Margin Electronics',sub:'air cargo',query:'Port of LA is delayed four days. Move high-margin electronics to the East Coast distribution center within 72 hours. Budget can flex, shipment value is high, service failure is costly, and delivery speed matters more than lowest cost.'},
-    {code:'REEF',label:'Biologics Cold Chain',sub:'reefer',query:'Urgent cold-chain delivery of biologics to Chicago hospital. Product must remain 2 to 8 Celsius, custody break is unacceptable, delivery window is tight, spoilage risk is high, and premium cost is acceptable.'},
-    {code:'RAIL',label:'Heavy Non-Urgent Freight',sub:'intermodal',query:'Move heavy containerized non-urgent freight across the country at the lowest practical cost with stable timing, lower carbon preference, and no same-day delivery requirement.'},
-    {code:'LTL',label:'Regional Pallet Delivery',sub:'LTL',query:'Ship three pallets regionally to a commercial dock with moderate urgency, no full truckload requirement, cost sensitivity, terminal network acceptable, and standard proof of delivery.'},
-    {code:'LAST',label:'Urban Same-Day Parcel',sub:'courier',query:'Same-day local delivery of small customer parcels across dense urban routes with proof of delivery, short delivery windows, and final-mile customer experience priority.'},
-    {code:'PORT',label:'Container Demurrage Risk',sub:'drayage',query:'Container is available at port but demurrage charges begin tomorrow. Need gate appointment, chassis, drayage pickup, transload to warehouse, and fast release from terminal congestion.'},
-    {code:'DC',label:'Stockout Rebalance',sub:'inventory',query:'Demand spike created stockout risk in the Northeast. Reallocate inventory from alternate distribution center while preserving service levels, backorder mitigation, and safety stock discipline.'}
-  ]},
-  {label:'Healthcare & Life Sci', items:[
-    {code:'PA',label:'Prior Authorization',sub:'payer',query:'Patient request requires medical necessity review, step therapy check, payer policy criteria, clinical documentation, approval workflow, and possible denial appeal.'},
-    {code:'TRIAGE',label:'Patient Triage',sub:'acuity',query:'Patient reports chest pain, shortness of breath, and dizziness. Determine urgent escalation path, acuity, nurse review, emergency routing, and clinical intake priority.'},
-    {code:'REF',label:'Specialist Referral',sub:'coordination',query:'Primary care visit requires referral to cardiology within network, authorization, appointment coordination, clinical handoff, and patient navigation.'},
-    {code:'TRIAL',label:'Trial Match',sub:'clinical',query:'Patient genomic profile and disease stage need clinical trial matching based on biomarker inclusion, exclusion criteria, protocol fit, and recruitment path.'}
-  ]},
-  {label:'Legal & Compliance', items:[
-    {code:'EDISC',label:'Discovery Review',sub:'litigation',query:'Large email corpus requires relevance review, custodians, litigation hold, privilege screening, redaction, and production workflow.'},
-    {code:'PRIV',label:'Privilege Screen',sub:'attorney-client',query:'Document set may contain confidential attorney-client legal advice and work product that needs privilege review, log generation, and clawback protection.'},
-    {code:'CONTRACT',label:'Contract Risk',sub:'clause',query:'Review vendor agreement for indemnity, termination, renewal, liability cap, governing law, obligations, and counterparty risk.'}
-  ]},
-  {label:'Finance & Insurance', items:[
-    {code:'CREDIT',label:'Loan Underwriting',sub:'credit',query:'Borrower application needs credit underwriting, income verification, collateral review, debt service analysis, and approval decision.'},
-    {code:'CLAIMS',label:'Insurance Claim',sub:'coverage',query:'First notice of loss requires coverage check, adjuster assignment, liability review, damage estimate, fraud screen, and settlement path.'},
-    {code:'FRAUD',label:'Payment Fraud',sub:'investigation',query:'Payment stream shows unusual transaction pattern, account takeover risk, chargeback likelihood, suspicious behavior, and fraud investigation priority.'}
-  ]},
-  {label:'Public Sector & Field', items:[
-    {code:'PERMIT',label:'Building Permit',sub:'plan review',query:'Applicant submitted building permit requiring zoning check, code compliance, plan review, inspection scheduling, and municipal workflow routing.'},
-    {code:'311',label:'Citizen Request',sub:'municipal',query:'Resident reports pothole and damaged streetlight needing 311 case creation, public works routing, work order, and constituent response.'},
-    {code:'EMERG',label:'Emergency Dispatch',sub:'incident',query:'Major storm created flooded roadway and downed power lines requiring fire, EMS, police, utility coordination, priority dispatch, and mutual aid.'}
-  ]},
-  {label:'Industrial & Security', items:[
-    {code:'SCADA',label:'SCADA Alarm',sub:'control room',query:'Plant telemetry alarm indicates abnormal pressure and sensor anomaly requiring control room escalation, OT monitoring, and industrial response.'},
-    {code:'SOC',label:'SOC Alert',sub:'triage',query:'SIEM alert shows suspicious login, endpoint signal, possible phishing, malware indicator, severity enrichment, and incident response routing.'},
-    {code:'VULN',label:'Patch Priority',sub:'vulnerability',query:'Critical CVE affects internet-facing asset with known exploitability, business criticality, patch window constraints, and remediation priority needed.'}
-  ]}
+  {
+    "label": "Core Compute Substrates",
+    "items": [
+      {
+        "code": "CPU",
+        "label": "Branchy Low-Latency Service",
+        "sub": "SIMD/CPU",
+        "query": "Latency-sensitive workload with branchy control flow, moderate numeric processing, cache locality concerns, deterministic host execution, and no obvious accelerator advantage."
+      },
+      {
+        "code": "GPU",
+        "label": "Massive Parallel Simulation",
+        "sub": "CUDA/GPU",
+        "query": "Massively parallel stochastic simulation with large vector operations, GPU kernels, high throughput compute, VRAM pressure, tensor acceleration, and profiling requirements."
+      },
+      {
+        "code": "TPU",
+        "label": "Matrix Training Run",
+        "sub": "TPU/XLA",
+        "query": "Large tensor workload dominated by matrix multiplication, JAX or TensorFlow graph compilation, bfloat16 acceleration, high throughput training, and accelerator-friendly input pipeline."
+      },
+      {
+        "code": "FPGA",
+        "label": "Deterministic Packet Path",
+        "sub": "FPGA",
+        "query": "Ultra-low-jitter packet processing and signal transformation with deterministic latency, fixed-function hardware pipeline, custom logic, and predictable throughput."
+      },
+      {
+        "code": "QPU",
+        "label": "Quantum Optimization",
+        "sub": "QPU",
+        "query": "Portfolio optimization with combinatorial constraints, many correlated variables, possible quantum annealing advantage, high-dimensional risk states, and non-convex objective search."
+      },
+      {
+        "code": "NEURO",
+        "label": "Realtime Sensor Spike",
+        "sub": "neuromorphic",
+        "query": "Continuous sensor stream with microsecond anomalies, low power edge inference, event-driven response, asynchronous spike pattern detection, and no batch delay allowed."
+      }
+    ]
+  },
+  {
+    "label": "Runtime & Edge",
+    "items": [
+      {
+        "code": "WASM",
+        "label": "Portable Sandbox Module",
+        "sub": "WASM",
+        "query": "Untrusted plugin code must run in a portable sandbox across browser and server environments with near-native speed, deterministic behavior, and tight isolation."
+      },
+      {
+        "code": "SVR",
+        "label": "Event Burst Handler",
+        "sub": "serverless",
+        "query": "Short-lived stateless request handler triggered by unpredictable event bursts, managed runtime, automatic scaling, simple request-response execution, and low operations burden."
+      },
+      {
+        "code": "K8S",
+        "label": "Long-Running Service",
+        "sub": "Kubernetes",
+        "query": "Containerized service requiring rolling deploys, autoscaling, service discovery, persistent operation, health checks, and cloud-native orchestration."
+      },
+      {
+        "code": "EDGE",
+        "label": "Global Edge Transform",
+        "sub": "edge worker",
+        "query": "User-facing request transformation must run close to the browser, personalize by geography, use CDN edge locations, and minimize round-trip latency."
+      },
+      {
+        "code": "VM",
+        "label": "Privileged Daemon Host",
+        "sub": "VM",
+        "query": "A long-running service needs full operating system control, custom packages, stable networking, privileged daemon support, and predictable host-level configuration."
+      },
+      {
+        "code": "BARE",
+        "label": "Pinned Bare-Metal Job",
+        "sub": "bare metal",
+        "query": "Performance-critical workload needs dedicated hardware, direct device access, NUMA pinning, no virtualization jitter, and predictable low-latency execution."
+      }
+    ]
+  },
+  {
+    "label": "Distributed Execution",
+    "items": [
+      {
+        "code": "SPARK",
+        "label": "Distributed Table Job",
+        "sub": "Spark/Dask",
+        "query": "Large partitioned dataframe workload requiring distributed workers, parallel aggregation, shuffle, lazy evaluation, and scalable cloud ETL execution."
+      },
+      {
+        "code": "RAY",
+        "label": "Distributed Python Jobs",
+        "sub": "Ray",
+        "query": "Python-native distributed workload with dynamic tasks, actors, shared object store, parallel model evaluation, hyperparameter tuning, and elastic workers."
+      },
+      {
+        "code": "MPI",
+        "label": "Tightly Coupled Solver",
+        "sub": "MPI",
+        "query": "Numerical simulation with domain decomposition, distributed memory, RDMA interconnect, message passing, synchronized steps, and tightly coupled HPC execution."
+      },
+      {
+        "code": "SLURM",
+        "label": "Scheduled Batch Run",
+        "sub": "Slurm",
+        "query": "Deterministic scheduled overnight run with checkpoint restart, queue submission, non-interactive batch processing, serial stages, and idempotent pipeline execution."
+      },
+      {
+        "code": "FLINK",
+        "label": "Stateful Event Stream",
+        "sub": "Flink/Kafka",
+        "query": "Continuous event stream requiring windowed aggregation, event-time semantics, stateful processing, exactly-once delivery, and low-latency telemetry updates."
+      },
+      {
+        "code": "ACTOR",
+        "label": "Fault-Tolerant Actors",
+        "sub": "actor runtime",
+        "query": "Distributed service needs many stateful actors, message passing, supervision, fault isolation, concurrency, and resilient long-lived process coordination."
+      }
+    ]
+  },
+  {
+    "label": "Data & Index Substrates",
+    "items": [
+      {
+        "code": "VEC",
+        "label": "Semantic Vector Recall",
+        "sub": "ANN index",
+        "query": "High-dimensional embedding retrieval with approximate nearest neighbor search, HNSW index, low-latency recall, memory-resident vectors, and semantic candidate preselection."
+      },
+      {
+        "code": "GRAPH",
+        "label": "Relationship Traversal",
+        "sub": "graph compute",
+        "query": "Network of entities and relationships requiring multi-hop traversal, shortest path, community detection, influence propagation, and graph topology analysis."
+      },
+      {
+        "code": "SEARCH",
+        "label": "Lexical Corpus Search",
+        "sub": "inverted index",
+        "query": "Large text corpus needs keyword retrieval, phrase matching, facet filtering, ranking, highlights, and fast full-text search over documents."
+      },
+      {
+        "code": "OLAP",
+        "label": "Warehouse Analytics",
+        "sub": "OLAP",
+        "query": "Historical analytical queries need columnar scans, SQL aggregation, business intelligence dashboards, large fact tables, and reporting workloads."
+      },
+      {
+        "code": "OLTP",
+        "label": "Transactional State",
+        "sub": "OLTP",
+        "query": "Application needs ACID transactions, relational integrity, point lookups, writes, consistency, row-level updates, and reliable operational state."
+      },
+      {
+        "code": "CACHE",
+        "label": "Hot Path Cache",
+        "sub": "Redis",
+        "query": "Repeated low-latency lookups need memory-resident key-value access, session state, rate limiting, pubsub, and fast ephemeral data storage."
+      }
+    ]
+  },
+  {
+    "label": "Model Serving",
+    "items": [
+      {
+        "code": "LLM",
+        "label": "Tool-Calling Agent",
+        "sub": "LLM inference",
+        "query": "Interactive assistant task requiring reliable tool calling, structured JSON outputs, instruction following, conversational behavior, and complex user request decomposition."
+      },
+      {
+        "code": "LOCAL",
+        "label": "Private Local Model",
+        "sub": "self-hosted",
+        "query": "Private inference must run on local infrastructure with self-hosted weights, offline operation, quantized model support, and no external API dependency."
+      },
+      {
+        "code": "EMBED",
+        "label": "Embedding Batch",
+        "sub": "encoder",
+        "query": "Large corpus requires batch text vectorization, normalized embeddings, semantic feature extraction, indexing, and reusable representation for retrieval."
+      },
+      {
+        "code": "VLM",
+        "label": "Screenshot Understanding",
+        "sub": "vision-language",
+        "query": "Multimodal workload needs image and text understanding, screenshot interpretation, visual question answering, document layout comprehension, and language-grounded perception."
+      },
+      {
+        "code": "ASR",
+        "label": "Audio Transcription",
+        "sub": "speech model",
+        "query": "Audio stream requires speech recognition, diarization, timestamps, acoustic segmentation, speaker-aware transcript output, and robust noisy-channel handling."
+      }
+    ]
+  },
+  {
+    "label": "Placement & Control Plane",
+    "items": [
+      {
+        "code": "GREEN",
+        "label": "Carbon-Aware Placement",
+        "sub": "green region",
+        "query": "Flexible workload can shift to lower-carbon data center region based on renewable energy availability, emissions profile, and sustainability preference."
+      },
+      {
+        "code": "SPOT",
+        "label": "Low-Cost Transient Run",
+        "sub": "spot capacity",
+        "query": "Cost-sensitive batch workload can tolerate interruption, checkpoint/restart, elastic capacity, and preemptible cloud instances for cheaper execution."
+      },
+      {
+        "code": "GOV",
+        "label": "Regulated Workload",
+        "sub": "GovCloud",
+        "query": "Government workload requires FedRAMP or DoD-authorized cloud region, controlled jurisdiction, regulated data handling, and compliance boundary."
+      },
+      {
+        "code": "BPM",
+        "label": "Multi-Step Workflow",
+        "sub": "orchestrator",
+        "query": "Long-running workflow needs retries, dependencies, scheduling, durable execution, task coordination, and observable step-by-step orchestration."
+      },
+      {
+        "code": "RULES",
+        "label": "Deterministic Policy Route",
+        "sub": "rules engine",
+        "query": "Transparent deterministic business rules need explainable branching, decision tables, eligibility constraints, policy evaluation, and audit-friendly routing."
+      },
+      {
+        "code": "QUEUE",
+        "label": "Asynchronous Buffer",
+        "sub": "message queue",
+        "query": "Producer and consumer services need decoupling, backpressure, durable messaging, retries, asynchronous work buffering, and resilient queue-based handoff."
+      }
+    ]
+  }
 ];
 
 let WORKLOADS = [];
@@ -556,7 +912,7 @@ function renderRouteResult(data,latency,query,fromCache){
   const routeRes=document.getElementById('route-result'); if(routeRes){ routeRes.textContent=`${winnerSubstrate.name} / ${maxScore.toFixed(4)} / gap ${gap.toFixed(4)}`; routeRes.classList.add('active'); }
   renderCandidates(sorted,maxScore);
   const resultCard=document.getElementById('result-card'); const resultBadge=document.getElementById('result-badge'); const resBody=document.getElementById('result-body'); resultCard?.classList.add('active'); if(resultBadge){ resultBadge.textContent=winnerSubstrate.name; resultBadge.style.color=getSubstrateColor(winner); }
-  const resultJSON={route:winnerSubstrate.name,code:winnerSubstrate.code,category:winnerSubstrate.category,score:Number(maxScore.toFixed(6)),gap:Number(gap.toFixed(6)),confidence,latency_ms:latency,cache:fromCache,endpoint:API,engine:'<1ms',mode:'semantic infrastructure routing',query,top_5:sorted.slice(0,5).map(r=>({route:SUBSTRATES[r.substrate].name,code:SUBSTRATES[r.substrate].code,score:Number(r.score.toFixed(6))}))};
+  const resultJSON={route:winnerSubstrate.name,code:winnerSubstrate.code,category:winnerSubstrate.category,score:Number(maxScore.toFixed(6)),gap:Number(gap.toFixed(6)),confidence,latency_ms:latency,cache:fromCache,endpoint:API,engine:'<1ms',mode:'semantic compute substrate routing',query,top_5:sorted.slice(0,5).map(r=>({route:SUBSTRATES[r.substrate].name,code:SUBSTRATES[r.substrate].code,score:Number(r.score.toFixed(6))}))};
   lastResultJSON=JSON.stringify(resultJSON,null,2); if(resBody) resBody.textContent=lastResultJSON;
 }
 function renderCandidates(sorted,maxScore){
