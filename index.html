@@ -4,27 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ARBITER · Semantic Infrastructure Router (Expanded)</title>
-  <meta name="description" content="Route natural-language intent across compute, models, supply chain, healthcare, legal, finance, and more – 76+ deterministic candidates. 26MB. No retraining.">
+  <meta name="description" content="Route natural-language intent across 76+ compute, model, supply chain, and finance destinations. Deterministic. 26MB. No retraining.">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
-    /* ========== FULL STYLES (original with minor adjustments for scaling) ========== */
+    /* ========== FULL ORIGINAL CSS (polished, responsive) ========== */
     :root {
-      --bg-primary:#0f1419;
-      --bg-secondary:#161b22;
-      --bg-tertiary:#1c2128;
-      --border-primary:#30363d;
-      --border-muted:#21262d;
-      --text-primary:#f0f6fc;
-      --text-secondary:#c9d1d9;
-      --text-tertiary:#8b949e;
-      --accent-primary:#58a6ff;
-      --accent-success:#3fb950;
-      --accent-danger:#f85149;
-      --accent-warning:#fb8500;
-      --button-bg:#2d333b;
-      --button-text:#f0f6fc;
-    }
-    html[data-theme="light"] {
       --bg-primary:#ffffff;
       --bg-secondary:#f9fafb;
       --bg-tertiary:#f3f4f6;
@@ -40,6 +24,22 @@
       --button-bg:#111827;
       --button-text:#ffffff;
     }
+    html[data-theme="dark"] {
+      --bg-primary:#0f1419;
+      --bg-secondary:#161b22;
+      --bg-tertiary:#1c2128;
+      --border-primary:#30363d;
+      --border-muted:#21262d;
+      --text-primary:#f0f6fc;
+      --text-secondary:#c9d1d9;
+      --text-tertiary:#8b949e;
+      --accent-primary:#58a6ff;
+      --accent-success:#3fb950;
+      --accent-danger:#f85149;
+      --accent-warning:#fb8500;
+      --button-bg:#2d333b;
+      --button-text:#f0f6fc;
+    }
     *{margin:0;padding:0;box-sizing:border-box;}
     body{background:var(--bg-primary);color:var(--text-primary);font-family:"Inter",sans-serif;font-size:14px;height:100vh;overflow:hidden;}
     .loading-indicator{position:fixed;top:54px;left:0;right:0;height:2px;background:var(--accent-primary);transform:scaleX(0);z-index:200;opacity:0;transition:opacity 0.2s;}
@@ -49,7 +49,7 @@
     .topbar-left{display:flex;gap:12px;align-items:center;}
     .topbar-title{font-size:15px;font-weight:700;text-transform:uppercase;}
     .topbar-divider{width:1px;height:20px;background:var(--border-muted);}
-    .topbar-subtitle{font-size:11px;color:var(--text-tertiary);}
+    .topbar-subtitle{font-size:11px;color:var(--text-tertiary);text-transform:uppercase;}
     .topbar-right{display:flex;gap:12px;align-items:center;}
     .topbar-spec{font-family:monospace;font-size:11px;color:var(--text-tertiary);}
     .btn-theme{background:transparent;border:1px solid var(--border-primary);color:var(--text-secondary);padding:4px 10px;border-radius:4px;cursor:pointer;}
@@ -71,20 +71,21 @@
     .main{display:flex;flex-direction:column;overflow:hidden;}
     .hero{display:grid;grid-template-columns:1fr 300px;gap:20px;padding:24px;border-bottom:1px solid var(--border-primary);background:var(--bg-secondary);}
     .hero-content{border-right:1px solid var(--border-muted);padding-right:24px;}
-    .hero-eyebrow{font-size:11px;color:var(--accent-primary);margin-bottom:8px;}
+    .hero-eyebrow{font-size:11px;color:var(--accent-primary);margin-bottom:8px;text-transform:uppercase;}
     .hero-title{font-size:28px;font-weight:700;margin-bottom:12px;}
     .hero-desc{font-size:14px;color:var(--text-secondary);margin-bottom:20px;}
     .intent-box{display:grid;grid-template-columns:1fr 120px;border:1px solid var(--border-primary);border-radius:6px;background:var(--bg-primary);}
-    .intent-input{grid-column:1;min-height:100px;border:0;border-right:1px solid var(--border-muted);padding:12px;background:transparent;font-family:monospace;resize:vertical;}
+    .intent-input{grid-column:1;min-height:100px;border:0;border-right:1px solid var(--border-muted);padding:12px;background:transparent;font-family:monospace;resize:vertical;outline:none;}
     .btn-primary{grid-column:2;border:0;background:var(--button-bg);color:var(--button-text);font-weight:600;cursor:pointer;}
-    .route-result{padding:8px 12px;border-top:1px solid var(--border-muted);font-family:monospace;font-size:12px;color:var(--accent-success);}
+    .route-result{padding:8px 12px;border-top:1px solid var(--border-muted);font-family:monospace;font-size:12px;color:var(--accent-success);opacity:0;transition:opacity 0.2s;}
+    .route-result.active{opacity:1;}
     .hero-metrics{display:flex;flex-direction:column;gap:12px;}
     .metric-item{border:1px solid var(--border-primary);border-radius:6px;padding:12px;}
-    .metric-label{font-size:10px;color:var(--text-tertiary);margin-bottom:6px;}
+    .metric-label{font-size:10px;color:var(--text-tertiary);margin-bottom:6px;text-transform:uppercase;}
     .metric-value{font-family:monospace;font-weight:600;}
     .confidence-bar{height:6px;background:var(--border-muted);border-radius:3px;margin:6px 0;}
-    .confidence-fill{height:100%;background:var(--accent-success);width:0%;border-radius:3px;}
-    .routes-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(130px,1fr));max-height:280px;overflow-y:auto;gap:1px;background:var(--border-muted);border-bottom:1px solid var(--border-primary);}
+    .confidence-fill{height:100%;background:linear-gradient(90deg, var(--accent-success), var(--accent-warning));width:0%;border-radius:3px;}
+    .routes-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(130px,1fr));gap:1px;background:var(--border-muted);max-height:280px;overflow-y:auto;border-bottom:1px solid var(--border-primary);}
     .route-card{background:var(--bg-secondary);padding:12px;position:relative;}
     .route-card.winner{background:var(--bg-tertiary);}
     .route-card.winner::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent-success);}
@@ -92,29 +93,30 @@
     .rc-name{font-size:11px;font-weight:600;margin-bottom:6px;}
     .rc-score{font-family:monospace;font-size:16px;margin-bottom:6px;}
     .rc-bar{height:3px;background:var(--border-muted);border-radius:2px;margin-bottom:6px;}
-    .rc-bar-fill{height:100%;background:var(--accent-primary);width:0%;}
+    .rc-bar-fill{height:100%;background:var(--accent-primary);width:0%;border-radius:2px;}
     .route-card.winner .rc-bar-fill{background:var(--accent-success);}
-    .rc-badge{font-size:9px;color:var(--text-tertiary);}
+    .rc-badge{font-size:9px;color:var(--text-tertiary);text-transform:uppercase;}
     .lower-panels{display:grid;grid-template-columns:1fr 1fr;flex:1;overflow:hidden;}
     .panel{display:flex;flex-direction:column;background:var(--bg-secondary);border-right:1px solid var(--border-primary);overflow:hidden;}
     .panel-header{padding:12px 16px;border-bottom:1px solid var(--border-primary);display:flex;justify-content:space-between;}
     .panel-body{flex:1;overflow-y:auto;}
     .candidate-row{display:flex;gap:12px;padding:10px 16px;border-bottom:1px solid var(--border-muted);align-items:center;}
-    .candidate-num{width:24px;height:24px;background:var(--bg-tertiary);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:10px;}
+    .candidate-num{width:24px;height:24px;background:var(--bg-tertiary);border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:10px;font-family:monospace;}
     .candidate-text{flex:1;font-family:monospace;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
     .candidate-bar-wrap{height:3px;background:var(--border-muted);border-radius:2px;width:100px;}
-    .candidate-bar{height:100%;background:var(--accent-primary);width:0%;}
+    .candidate-bar{height:100%;background:var(--accent-primary);width:0%;border-radius:2px;}
     .candidate-score{font-family:monospace;font-size:11px;min-width:50px;text-align:right;}
     .curl-wrapper{padding:16px;}
     .curl-block{background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:4px;padding:12px;font-family:monospace;font-size:10px;white-space:pre-wrap;}
-    .result-card{margin-top:12px;border-top:1px solid var(--border-muted);padding-top:12px;opacity:0;max-height:0;transition:0.2s;}
+    .result-card{margin-top:12px;border-top:1px solid var(--border-muted);padding-top:12px;opacity:0;max-height:0;transition:0.2s;overflow:hidden;}
     .result-card.active{opacity:1;max-height:800px;}
-    .result-body{background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:4px;padding:12px;font-family:monospace;font-size:10px;white-space:pre-wrap;}
-    .btn-copy{background:transparent;border:1px solid var(--border-primary);padding:4px 8px;border-radius:4px;cursor:pointer;font-size:10px;}
+    .result-body{background:var(--bg-primary);border:1px solid var(--border-primary);border-radius:4px;padding:12px;font-family:monospace;font-size:10px;white-space:pre-wrap;max-height:260px;overflow-y:auto;}
+    .btn-copy{background:transparent;border:1px solid var(--border-primary);padding:4px 8px;border-radius:4px;cursor:pointer;font-size:10px;font-family:monospace;}
     .footer{height:40px;background:var(--bg-secondary);border-top:1px solid var(--border-primary);display:flex;justify-content:space-between;align-items:center;padding:0 20px;font-size:10px;font-family:monospace;}
     .history-item{padding:8px 12px;border-bottom:1px solid var(--border-muted);cursor:pointer;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
     .history-item:hover{background:var(--bg-tertiary);}
-    @media (max-width:768px){.container{grid-template-columns:1fr;}}
+    @media (max-width:1280px){.routes-grid{grid-template-columns:repeat(auto-fill, minmax(140px,1fr));}}
+    @media (max-width:768px){.container{grid-template-columns:1fr;}.sidebar{display:none;}.hero{grid-template-columns:1fr;}.hero-content{border-right:none;margin-bottom:20px;}.lower-panels{grid-template-columns:1fr;}}
   </style>
 </head>
 <body>
@@ -134,10 +136,10 @@
       <div class="hero-content">
         <div class="hero-eyebrow">Intent → Substrate Dispatch</div>
         <h2 class="hero-title">Semantic Workload Routing · Expanded</h2>
-        <p class="hero-desc">Route natural‑language intent across compute, models, data, cloud, robotics, supply chain, healthcare, legal, finance, and industrial destinations. Deterministic. 26MB. No retraining.</p>
+        <p class="hero-desc">Route natural‑language intent across 76+ compute, model, supply chain, healthcare, legal, and finance destinations. Deterministic. 26MB. No retraining.</p>
         <div class="intent-box">
-          <textarea id="custom-input" class="intent-input" placeholder="Describe a workload, shipment, job, task, or destination intent..."></textarea>
-          <button id="route-btn" class="btn-primary" onclick="routeIntent()">Route Intent</button>
+          <textarea id="custom-input" class="intent-input" placeholder="Describe a workload, shipment, job, or intent..."></textarea>
+          <button id="route-btn" class="btn-primary" onclick="routeIntent()">Route ⌘↵</button>
           <div id="route-result" class="route-result"></div>
         </div>
       </div>
@@ -166,7 +168,7 @@ function toggleTheme() {
 const savedTheme = localStorage.getItem('arbiter-theme') || 'dark';
 document.documentElement.dataset.theme = savedTheme;
 
-// ============ EXPANDED DESTINATIONS (76+ candidates) ============
+// ============ 76+ DESTINATIONS (Compute, Models, Supply Chain, Healthcare, Legal, Finance, ...) ============
 const DESTINATIONS = [
   {id:0,code:'QU',name:'Quantum',category:'Compute',candidate:'QPU qubit entanglement superposition Hilbert space wavefunction eigenstate unitary operator Hamiltonian decoherence Bell state variational ansatz quantum annealing Pauli matrix'},
   {id:1,code:'AI',name:'AI/LLM',category:'Compute',candidate:'transformer large language model token embedding attention inference generation prompt reasoning schema extraction natural language structured output document'},
@@ -269,8 +271,7 @@ const WORKLOAD_GROUPS = [
     {code:'LTL',label:'Regional Pallet Delivery',sub:'LTL',query:'Ship three pallets regionally to a commercial dock with moderate urgency, no full truckload requirement, cost sensitivity, terminal network acceptable, and standard proof of delivery.'},
     {code:'LAST',label:'Urban Same-Day Parcel',sub:'courier',query:'Same-day local delivery of small customer parcels across dense urban routes with proof of delivery, short delivery windows, and final-mile customer experience priority.'},
     {code:'PORT',label:'Container Demurrage Risk',sub:'drayage',query:'Container is available at port but demurrage charges begin tomorrow. Need gate appointment, chassis, drayage pickup, transload to warehouse, and fast release from terminal congestion.'},
-    {code:'DC',label:'Stockout Rebalance',sub:'inventory',query:'Demand spike created stockout risk in the Northeast. Reallocate inventory from alternate distribution center while preserving service levels, backorder mitigation, and safety stock discipline.'},
-    {code:'HOLD',label:'Quality Hold',sub:'validated storage',query:'Temperature excursion alert on pharma shipment. Stop movement, preserve custody, hold in validated storage, quarantine product, trigger quality review, and prevent uncontrolled delivery.'}
+    {code:'DC',label:'Stockout Rebalance',sub:'inventory',query:'Demand spike created stockout risk in the Northeast. Reallocate inventory from alternate distribution center while preserving service levels, backorder mitigation, and safety stock discipline.'}
   ]},
   {label:'Healthcare & Life Sci', items:[
     {code:'PA',label:'Prior Authorization',sub:'payer',query:'Patient request requires medical necessity review, step therapy check, payer policy criteria, clinical documentation, approval workflow, and possible denial appeal.'},
@@ -312,6 +313,7 @@ function normalizeCandidate(v){ return String(v||'').replace(/\s+/g,' ').trim().
 function escapeHTML(v){ return String(v??'').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]); }
 function setText(id,val){ let el=document.getElementById(id); if(el) el.textContent=val; }
 function calculateConfidence(gap){ if(gap>0.25) return 'HIGH'; if(gap>0.1) return 'MODERATE'; return 'LOW'; }
+function getSubstrateColor(idx){ const colors=['#6366f1','#2563eb','#059669','#d97706','#dc2626','#16a34a','#0ea5e9','#7c3aed','#475569']; return colors[idx%colors.length]; }
 
 function buildSidebar(){
   const container = document.getElementById('sidebar-content');
@@ -327,13 +329,30 @@ function buildSidebar(){
   });
   container.innerHTML=html;
 }
-function setupSidebarSearch(){ const inp=document.getElementById('sidebar-search'); if(inp) inp.addEventListener('input',e=>{ const q=e.target.value.trim().toLowerCase(); document.querySelectorAll('.workload-item').forEach(el=>{ const lbl=el.dataset.label||''; el.classList.toggle('hidden',q.length>0 && !lbl.includes(q)); }); }); }
-function renderRouteCards(){ const container=document.getElementById('routes-container'); if(!container) return; container.innerHTML=SUBSTRATES.map(s=>`<div class="route-card" id="card-${s.id}" title="${escapeHTML(s.category)} · ${escapeHTML(s.name)}"><div class="rc-code">${escapeHTML(s.code)}</div><div class="rc-name">${escapeHTML(s.name)}</div><div class="rc-score" id="score-${s.id}">—</div><div class="rc-bar"><div class="rc-bar-fill" id="bar-${s.id}"></div></div><div class="rc-badge" id="badge-${s.id}">Standby</div></div>`).join(''); }
-function selectWorkload(idx){ const w=WORKLOADS[idx]; if(!w) return; document.querySelectorAll('.workload-item').forEach(el=>el.classList.toggle('active',Number(el.dataset.index)===idx)); document.getElementById('custom-input').value=w.query; executeRoute(w.query); }
-function routeIntent(){ const q=document.getElementById('custom-input').value.trim(); if(!q) return; document.querySelectorAll('.workload-item').forEach(el=>el.classList.remove('active')); executeRoute(q); }
+function setupSidebarSearch(){
+  const inp=document.getElementById('sidebar-search');
+  if(inp) inp.addEventListener('input',e=>{ const q=e.target.value.trim().toLowerCase(); document.querySelectorAll('.workload-item').forEach(el=>{ const lbl=el.dataset.label||''; el.classList.toggle('hidden',q.length>0 && !lbl.includes(q)); }); });
+}
+function renderRouteCards(){
+  const container=document.getElementById('routes-container');
+  if(!container) return;
+  container.innerHTML=SUBSTRATES.map(s=>`<div class="route-card" id="card-${s.id}" title="${escapeHTML(s.category)} · ${escapeHTML(s.name)}"><div class="rc-code">${escapeHTML(s.code)}</div><div class="rc-name">${escapeHTML(s.name)}</div><div class="rc-score" id="score-${s.id}">—</div><div class="rc-bar"><div class="rc-bar-fill" id="bar-${s.id}"></div></div><div class="rc-badge" id="badge-${s.id}">Standby</div></div>`).join('');
+}
+function selectWorkload(idx){
+  const w=WORKLOADS[idx];
+  if(!w) return;
+  document.querySelectorAll('.workload-item').forEach(el=>el.classList.toggle('active',Number(el.dataset.index)===idx));
+  document.getElementById('custom-input').value=w.query;
+  executeRoute(w.query);
+}
+function routeIntent(){
+  const q=document.getElementById('custom-input').value.trim();
+  if(!q) return;
+  document.querySelectorAll('.workload-item').forEach(el=>el.classList.remove('active'));
+  executeRoute(q);
+}
 async function executeRoute(query){
-  const btn=document.getElementById('route-btn'), loader=document.getElementById('loading-indicator');
-  const resBody=document.getElementById('result-body');
+  const btn=document.getElementById('route-btn'), loader=document.getElementById('loading-indicator'), resBody=document.getElementById('result-body');
   latestQuery=query;
   btn.disabled=true; btn.textContent='Routing...';
   loader?.classList.add('active'); resBody?.classList.remove('error');
@@ -357,13 +376,37 @@ async function executeRoute(query){
   finally{ btn.disabled=false; btn.textContent='Route Intent'; loader?.classList.remove('active'); }
 }
 function normalizeArbiterResponse(data){ const raw=Array.isArray(data)?data:(data?.all||data?.top||data?.results||[]); const rows=raw.map((cand,idx)=>{ const text=String(cand?.text??cand?.candidate??cand?.label??CANDIDATES[idx]??''); const score=Number(cand?.score??cand?.similarity??cand?.coherence??0); const exactIdx=CANDIDATE_INDEX.get(normalizeCandidate(text)); const prefixIdx=exactIdx??CANDIDATES.findIndex(v=>normalizeCandidate(v).slice(0,64)===normalizeCandidate(text).slice(0,64)); const substrate=prefixIdx>=0?prefixIdx:idx; return {substrate,score,text}; }).filter(r=>r.text&&Number.isFinite(r.score)&&SUBSTRATES[r.substrate]); if(!rows.length) throw new Error('No scored candidates'); return {raw:data,all:rows}; }
-function renderRouteResult(data,latency,query,fromCache){ const all=data.all||[]; const sorted=[...all].sort((a,b)=>b.score-a.score); const winnerRow=sorted[0]; const winner=winnerRow.substrate; const maxScore=winnerRow.score; const secondScore=sorted[1]?.score??0; const gap=maxScore-secondScore; const confidence=calculateConfidence(gap); const confidencePct=maxScore?Math.max(0,Math.min(100,Math.round((gap/Math.abs(maxScore))*100))):0; const winnerSubstrate=SUBSTRATES[winner]; latestConfidence=confidence; latestLatency=fromCache?`${latency}ms cached`:`${latency}ms`; setText('footer-api-ms',latestLatency); setText('footer-confidence',latestConfidence); setText('latest-latency',latestLatency); setText('confidence-pct',confidence); setText('candidate-meta',`${all.length} candidates`); setText('api-meta',fromCache?`${latency}ms cached response`:`${latency}ms API latency`); const confFill=document.getElementById('confidence-fill'); if(confFill) confFill.style.width=`${Math.min(confidencePct*2.5,100)}%`; all.forEach(row=>{ const card=document.getElementById(`card-${row.substrate}`); const scoreEl=document.getElementById(`score-${row.substrate}`); const barEl=document.getElementById(`bar-${row.substrate}`); const badgeEl=document.getElementById(`badge-${row.substrate}`); const pct=maxScore?Math.max(0,Math.min(100,(row.score/maxScore)*100)):0; const isWinner=row.substrate===winner; card?.classList.toggle('winner',isWinner); if(scoreEl) scoreEl.textContent=row.score.toFixed(4); if(barEl) barEl.style.width=`${pct}%`; if(badgeEl) badgeEl.textContent=isWinner?`Route · ${confidence}`:SUBSTRATES[row.substrate].category; }); const routeRes=document.getElementById('route-result'); if(routeRes){ routeRes.textContent=`${winnerSubstrate.name} / ${maxScore.toFixed(4)} / gap ${gap.toFixed(4)}`; routeRes.classList.add('active'); } renderCandidates(sorted,maxScore); const resultCard=document.getElementById('result-card'); const resultBadge=document.getElementById('result-badge'); const resBody=document.getElementById('result-body'); resultCard?.classList.add('active'); if(resultBadge){ resultBadge.textContent=winnerSubstrate.name; resultBadge.style.color=getSubstrateColor(winner); } const resultJSON={route:winnerSubstrate.name,code:winnerSubstrate.code,category:winnerSubstrate.category,score:Number(maxScore.toFixed(6)),gap:Number(gap.toFixed(6)),confidence,latency_ms:latency,cache:fromCache,endpoint:API,engine:'<1ms',mode:'semantic infrastructure routing',query,top_5:sorted.slice(0,5).map(r=>({route:SUBSTRATES[r.substrate].name,code:SUBSTRATES[r.substrate].code,score:Number(r.score.toFixed(6))}))}; lastResultJSON=JSON.stringify(resultJSON,null,2); if(resBody) resBody.textContent=lastResultJSON; }
-function renderCandidates(sorted,maxScore){ const container=document.getElementById('candidate-list'); if(!container) return; container.innerHTML=sorted.slice(0,30).map((row,index)=>{ const substrate=SUBSTRATES[row.substrate]; const isTop=index===0; const pct=maxScore?Math.max(0,Math.min(100,(row.score/maxScore)*100)):0; return `<div class="candidate-row ${isTop?'top':''}" style="--route-color:${getSubstrateColor(row.substrate)}"><div class="candidate-num">${index+1}</div><div class="candidate-body"><div class="candidate-text" title="${escapeHTML(row.text)}">${escapeHTML(substrate.code)} · ${escapeHTML(substrate.name)} · ${escapeHTML(row.text)}</div><div class="candidate-bar-wrap"><div class="candidate-bar" style="width:${pct}%"></div></div></div><div class="candidate-score">${row.score.toFixed(4)}</div></div>`; }).join('')+(sorted.length>30?`<div style="padding:12px;font-size:10px;">+ ${sorted.length-30} more</div>`:''); }
-function resetRouteCards(){ SUBSTRATES.forEach(s=>{ document.getElementById(`card-${s.id}`)?.classList.remove('winner'); setText(`score-${s.id}`,'—'); setText(`badge-${s.id}`,'Standby'); const bar=document.getElementById(`bar-${s.id}`); if(bar) bar.style.width='0%'; }); setText('candidate-meta','Routing...'); setText('api-meta','api.arbiter.traut.ai'); }
-function getSubstrateColor(idx){ const colors=['#6366f1','#2563eb','#059669','#d97706','#dc2626','#16a34a','#0ea5e9','#7c3aed','#475569']; return colors[idx%colors.length]; }
+function renderRouteResult(data,latency,query,fromCache){
+  const all=data.all||[]; const sorted=[...all].sort((a,b)=>b.score-a.score); const winnerRow=sorted[0]; const winner=winnerRow.substrate; const maxScore=winnerRow.score; const secondScore=sorted[1]?.score??0; const gap=maxScore-secondScore; const confidence=calculateConfidence(gap); const confidencePct=maxScore?Math.max(0,Math.min(100,Math.round((gap/Math.abs(maxScore))*100))):0; const winnerSubstrate=SUBSTRATES[winner];
+  latestConfidence=confidence; latestLatency=fromCache?`${latency}ms cached`:`${latency}ms`;
+  setText('footer-api-ms',latestLatency); setText('footer-confidence',latestConfidence); setText('latest-latency',latestLatency); setText('confidence-pct',confidence);
+  setText('candidate-meta',`${all.length} candidates`); setText('api-meta',fromCache?`${latency}ms cached response`:`${latency}ms API latency`);
+  const confFill=document.getElementById('confidence-fill'); if(confFill) confFill.style.width=`${Math.min(confidencePct*2.5,100)}%`;
+  all.forEach(row=>{ const card=document.getElementById(`card-${row.substrate}`); const scoreEl=document.getElementById(`score-${row.substrate}`); const barEl=document.getElementById(`bar-${row.substrate}`); const badgeEl=document.getElementById(`badge-${row.substrate}`); const pct=maxScore?Math.max(0,Math.min(100,(row.score/maxScore)*100)):0; const isWinner=row.substrate===winner; card?.classList.toggle('winner',isWinner); if(scoreEl) scoreEl.textContent=row.score.toFixed(4); if(barEl) barEl.style.width=`${pct}%`; if(badgeEl) badgeEl.textContent=isWinner?`Route · ${confidence}`:SUBSTRATES[row.substrate].category; });
+  const routeRes=document.getElementById('route-result'); if(routeRes){ routeRes.textContent=`${winnerSubstrate.name} / ${maxScore.toFixed(4)} / gap ${gap.toFixed(4)}`; routeRes.classList.add('active'); }
+  renderCandidates(sorted,maxScore);
+  const resultCard=document.getElementById('result-card'); const resultBadge=document.getElementById('result-badge'); const resBody=document.getElementById('result-body'); resultCard?.classList.add('active'); if(resultBadge){ resultBadge.textContent=winnerSubstrate.name; resultBadge.style.color=getSubstrateColor(winner); }
+  const resultJSON={route:winnerSubstrate.name,code:winnerSubstrate.code,category:winnerSubstrate.category,score:Number(maxScore.toFixed(6)),gap:Number(gap.toFixed(6)),confidence,latency_ms:latency,cache:fromCache,endpoint:API,engine:'<1ms',mode:'semantic infrastructure routing',query,top_5:sorted.slice(0,5).map(r=>({route:SUBSTRATES[r.substrate].name,code:SUBSTRATES[r.substrate].code,score:Number(r.score.toFixed(6))}))};
+  lastResultJSON=JSON.stringify(resultJSON,null,2); if(resBody) resBody.textContent=lastResultJSON;
+}
+function renderCandidates(sorted,maxScore){
+  const container=document.getElementById('candidate-list'); if(!container) return;
+  container.innerHTML=sorted.slice(0,30).map((row,index)=>{ const substrate=SUBSTRATES[row.substrate]; const isTop=index===0; const pct=maxScore?Math.max(0,Math.min(100,(row.score/maxScore)*100)):0; return `<div class="candidate-row ${isTop?'top':''}" style="--route-color:${getSubstrateColor(row.substrate)}"><div class="candidate-num">${index+1}</div><div class="candidate-body"><div class="candidate-text" title="${escapeHTML(row.text)}">${escapeHTML(substrate.code)} · ${escapeHTML(substrate.name)} · ${escapeHTML(row.text)}</div><div class="candidate-bar-wrap"><div class="candidate-bar" style="width:${pct}%"></div></div></div><div class="candidate-score">${row.score.toFixed(4)}</div></div>`;
+  }).join('')+(sorted.length>30?`<div style="padding:12px;font-size:10px;">+ ${sorted.length-30} more</div>`:'');
+}
+function resetRouteCards(){
+  SUBSTRATES.forEach(s=>{ document.getElementById(`card-${s.id}`)?.classList.remove('winner'); setText(`score-${s.id}`,'—'); setText(`badge-${s.id}`,'Standby'); const bar=document.getElementById(`bar-${s.id}`); if(bar) bar.style.width='0%'; });
+  setText('candidate-meta','Routing...'); setText('api-meta','api.arbiter.traut.ai');
+}
 function trimCache(){ while(currentQueryCache.size>50){ const first=currentQueryCache.keys().next().value; currentQueryCache.delete(first); } }
-function updateCurlDisplay(query){ const payload={query:query||'Describe a workload...',candidates:CANDIDATES.slice(0,20)}; const curl=`curl -X POST ${API} \\\n  -H "Content-Type: application/json" \\\n  --data-binary @- <<'JSON'\n${JSON.stringify(payload,null,2)}\nJSON`; setText('curl-block',curl); }
-function showError(msg){ const resultCard=document.getElementById('result-card'); const resultBadge=document.getElementById('result-badge'); const resultBody=document.getElementById('result-body'); const routeResult=document.getElementById('route-result'); resultCard?.classList.add('active'); if(resultBadge){ resultBadge.textContent='Error'; resultBadge.style.color=getComputedStyle(document.documentElement).getPropertyValue('--accent-danger'); } if(resultBody){ resultBody.classList.add('error'); resultBody.textContent=`API Error: ${msg}`; } if(routeResult){ routeResult.textContent=`API Error: ${msg}`; routeResult.classList.add('active'); } setText('candidate-meta','Route failed'); setText('api-meta','API error'); setText('footer-api-ms','—'); setText('footer-confidence','—'); setText('latest-latency','—'); setText('confidence-pct','—'); const confFill=document.getElementById('confidence-fill'); if(confFill) confFill.style.width='0%'; }
+function updateCurlDisplay(query){
+  const payload={query:query||'Describe...',candidates:CANDIDATES.slice(0,20)}; const curl=`curl -X POST ${API} \\\n  -H "Content-Type: application/json" \\\n  --data-binary @- <<'JSON'\n${JSON.stringify(payload,null,2)}\nJSON`; setText('curl-block',curl);
+}
+function showError(msg){
+  const resultCard=document.getElementById('result-card'); const resultBadge=document.getElementById('result-badge'); const resultBody=document.getElementById('result-body'); const routeResult=document.getElementById('route-result');
+  resultCard?.classList.add('active'); if(resultBadge){ resultBadge.textContent='Error'; resultBadge.style.color=getComputedStyle(document.documentElement).getPropertyValue('--accent-danger'); } if(resultBody){ resultBody.classList.add('error'); resultBody.textContent=`API Error: ${msg}`; } if(routeResult){ routeResult.textContent=`API Error: ${msg}`; routeResult.classList.add('active'); }
+  setText('candidate-meta','Route failed'); setText('api-meta','API error'); setText('footer-api-ms','—'); setText('footer-confidence','—'); setText('latest-latency','—'); setText('confidence-pct','—'); const confFill=document.getElementById('confidence-fill'); if(confFill) confFill.style.width='0%';
+}
 function addToHistory(q){ const norm=q.trim(); if(!norm) return; queryHistory=[norm,...queryHistory.filter(item=>item!==norm)].slice(0,10); saveHistory(); renderHistory(); }
 function saveHistory(){ localStorage.setItem('arbiter-history',JSON.stringify(queryHistory)); }
 function loadHistory(){ try{ const saved=localStorage.getItem('arbiter-history'); queryHistory=saved?JSON.parse(saved):[]; }catch(e){ queryHistory=[]; } renderHistory(); }
